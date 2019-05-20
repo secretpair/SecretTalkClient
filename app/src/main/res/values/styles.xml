@@ -1,0 +1,18 @@
+<resources>
+
+
+    <style name="AppTheme" parent="Theme.Design.Light.NoActionBar">
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+
+    <style name="BottomNavigationView" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">8sp</item>
+    </style>
+
+    <style name="BottomNavigationView.Active" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">8sp</item>
+    </style>
+
+
+</resources>
