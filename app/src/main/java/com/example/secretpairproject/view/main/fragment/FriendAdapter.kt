@@ -8,11 +8,13 @@ import com.example.secretpairproject.R
 import com.example.secretpairproject.config.BIRTHDAY_HEADER
 import com.example.secretpairproject.config.ME
 import com.example.secretpairproject.config.MODULATION_IS_HEADER
-import com.example.secretpairproject.config.RECOMMEND_FRIEND
 import com.example.secretpairproject.model.friend.FriendDTO
 import kotlinx.android.synthetic.main.recycler_item_friend.view.*
 import kotlinx.android.synthetic.main.recycler_item_friend_header.view.*
 import kotlinx.android.synthetic.main.recycler_item_friend_me.view.*
+import java.util.*
+import java.util.stream.Collectors
+import kotlin.collections.ArrayList
 
 class FriendAdapter(private val click: (String) -> Unit) :
     RecyclerView.Adapter<FriendAdapter.BaseViewHolder>() {
@@ -102,13 +104,20 @@ class FriendAdapter(private val click: (String) -> Unit) :
         abstract fun setView(data: FriendDTO)
     }
 
+
+    fun addMiddleList(middleList: List<FriendDTO>) {
+        list.addAll(middleList)
+        list.sort()
+    }
+
     fun updateMe(me: FriendDTO) {
         val index = list.indexOf(me)
         if (index != -1) {
             list[list.indexOf(me)] = me
-        } else {
-            list[0] = me
-        }
+        } else if (list.size == 0)
+            list.add(me)
+
+        list.sort()
     }
 
     fun updateNormalFriend(friends: List<FriendDTO>) {
@@ -120,6 +129,7 @@ class FriendAdapter(private val click: (String) -> Unit) :
                 list.add(friend)
             }
         }
+        list.sort()
     }
 
 

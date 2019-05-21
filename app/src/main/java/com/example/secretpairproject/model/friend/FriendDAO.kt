@@ -35,6 +35,8 @@ interface FriendDAO {
     @Query("SELECT * FROM friend ORDER BY viewType")
     fun getAllInfo(): List<FriendDTO>
 
+    @Query("SELECT* FROM friend WHERE viewType >= :birthDayHeader AND viewType <= :friendHeader ORDER BY viewType")
+    fun getBetweenMeAndFriendList(birthDayHeader: Int, friendHeader: Int): List<FriendDTO>
 
 }
 

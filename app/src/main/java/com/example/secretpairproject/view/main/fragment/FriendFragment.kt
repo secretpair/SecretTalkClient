@@ -1,6 +1,7 @@
 package com.example.secretpairproject.view.main.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.secretpairproject.R
+import com.example.secretpairproject.config.*
 import com.example.secretpairproject.model.friend.FriendDTO
 import com.example.secretpairproject.viewmodel.friend.FriendViewModel
 import kotlinx.android.synthetic.main.fragment_1friend.view.*
@@ -18,8 +20,6 @@ import kotlinx.android.synthetic.main.fragment_1friend.view.*
 
 object FriendFragment : Fragment() {
 
-
-    private val list: ArrayList<FriendDTO> by lazy { arrayListOf<FriendDTO>() }
     private val friendViewModel by lazy { ViewModelProviders.of(this).get(FriendViewModel::class.java) }
 
 
@@ -37,24 +37,41 @@ object FriendFragment : Fragment() {
 
         friendViewModel.myData.observe(this, Observer {
             adapter.updateMe(it)
-        })
-
-        friendViewModel.birthDayFriendList.observe(this, Observer {
+            adapter.notifyDataSetChanged()
 
         })
+
+        friendViewModel.middleData.observe(this, Observer {
+            adapter.addMiddleList(it)
+            adapter.notifyDataSetChanged()
+
+        })
+
         friendViewModel.normalFriendList.observe(this, Observer {
             adapter.updateNormalFriend(it)
+            adapter.notifyDataSetChanged()
         })
 
 
 
-
+        test()
         return view
     }
 
 
-    fun test(){
+    fun test() {
 
+        friendViewModel.insertFriend(FriendDTO("alstn225@naver.com", "배민수", "silvercong", " ", " ", " ", ME))
+        friendViewModel.insertFriend(FriendDTO("BIRTHDAY_HEADER", "오늘 생일인 친구", "", " ", " ", " ", BIRTHDAY_HEADER))
+        friendViewModel.insertFriend(FriendDTO("RECOMMEND_HEADER", "추천친구", "", " ", " ", " ", RECOMMEND_HEADER))
+        friendViewModel.insertFriend(FriendDTO("RECOMMEND_FRIEND", "새로운 친구를 만나보세요!", "", " ", " ", " ", RECOMMEND_FRIEND))
+        friendViewModel.insertFriend(FriendDTO("FRIEND_HEADER", "친구", "", " ", " ", " ", FRIEND_HEADER))
+        friendViewModel.insertFriend(FriendDTO("alstn211@naver.com", "김민수1", "silvercong", " ", " ", " ", FRIEND_FRIEND))
+        friendViewModel.insertFriend(FriendDTO("alstn212@naver.com", "김민수2", "silvercong", " ", " ", " ", FRIEND_FRIEND))
+        friendViewModel.insertFriend(FriendDTO("alstn213@naver.com", "김민수4", "silvercong", " ", " ", " ", FRIEND_FRIEND))
+        friendViewModel.insertFriend(FriendDTO("alstn214@naver.com", "배민수1", "silvercong", " ", " ", " ", FRIEND_FRIEND))
+        friendViewModel.insertFriend(FriendDTO("alstn215@naver.com", "배민수2", "silvercong", " ", " ", " ", FRIEND_FRIEND))
+        friendViewModel.insertFriend(FriendDTO("alstn216@naver.com", "배민수3", "silvercong", " ", " ", " ", FRIEND_FRIEND))
 
     }
 
