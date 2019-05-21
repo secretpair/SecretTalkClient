@@ -28,21 +28,20 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-
         SharePreferenceManager.put(this, "email", "kluge0221@gmail.com")
-
 
         val source = Single.just<String>(SharePreferenceManager.getString(this, "email"))
             .delay(1000, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
+        source.subscribe { it ->
 
-        val dispose = source.subscribe { it ->
 
             if (it.isBlank()) {
                 //TODO 로그인 이동
             } else {
+                //TODO 토큰 유효성 체크
                 Intent(this, MainActivity::class.java).apply {
                     startActivity(this)
                     finish()
@@ -51,6 +50,7 @@ class SplashActivity : AppCompatActivity() {
         }.apply {
             disposables.add(this)
         }
+
 
 
     }

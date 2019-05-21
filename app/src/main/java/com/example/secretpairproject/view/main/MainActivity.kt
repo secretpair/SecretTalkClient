@@ -18,9 +18,6 @@ class MainActivity : BaseActivity() {
     lateinit var pagerAdapter: MainBottomNavViewPagerAdapter
     lateinit var mainViewModel: MainViewModel
 
-
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)

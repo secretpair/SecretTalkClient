@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.secretpairproject.R
+import com.example.secretpairproject.config.*
 import com.example.secretpairproject.model.friend.FriendDTO
 import com.example.secretpairproject.viewmodel.friend.FriendViewModel
 import kotlinx.android.synthetic.main.fragment_1friend.view.*
@@ -31,31 +32,41 @@ object FriendFragment : Fragment() {
         }
 
         friendViewModel = ViewModelProviders.of(this).get(FriendViewModel::class.java)
-        friendViewModel.getAllFriend().observe(this, Observer {
+        friendViewModel.getFriendAllInfo().observe(this, Observer {
             list.clear()
             list.addAll(it!!)
             adapter.notifyDataSetChanged()
         })
-        testFunction()
+
+
         view.friend_recycler_view.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         view.friend_recycler_view.adapter = adapter
 
+        testFunction()
 
         return view
     }
 
     private fun testFunction() {
 
+
         val email = "alstn224@naver.com"
-        friendViewModel.insertFriendByEmail(email+"1")
-        friendViewModel.insertFriendByEmail(email+"2")
-        friendViewModel.insertFriendByEmail(email+"3")
-        friendViewModel.insertFriendByEmail(email+"4")
-        friendViewModel.insertFriendByEmail(email+"5")
-        friendViewModel.insertFriendByEmail(email+"6")
-        friendViewModel.insertFriendByEmail(email+"7")
-        friendViewModel.insertFriendByEmail(email+"8")
-        friendViewModel.insertFriendByEmail(email+"9")
+        friendViewModel.insertFriend("kluge0221@gmail.com", ME)
+
+        friendViewModel.insertFriend("BIRTHDAY_HEADER","오늘 생일인 친구", BIRTHDAY_HEADER)
+        friendViewModel.insertFriend("RECOMMEND_HEADER","추천친구", RECOMMEND_HEADER)
+        friendViewModel.insertFriend("RECOMMEND_FRIEND","새로운 친구를 만나보세요!", RECOMMEND_FRIEND)
+
+        friendViewModel.insertFriend("FRIEND_HEADER","추천친구", FRIEND_HEADER)
+        friendViewModel.insertFriend(email + "1", FRIEND_FRIEND)
+        friendViewModel.insertFriend(email + "2", FRIEND_FRIEND)
+        friendViewModel.insertFriend(email + "3", FRIEND_FRIEND)
+        friendViewModel.insertFriend(email + "4", FRIEND_FRIEND)
+        friendViewModel.insertFriend(email + "5", FRIEND_FRIEND)
+        friendViewModel.insertFriend(email + "6", FRIEND_FRIEND)
+        friendViewModel.insertFriend(email + "7", FRIEND_FRIEND)
+        friendViewModel.insertFriend(email + "8", FRIEND_FRIEND)
+        friendViewModel.insertFriend(email + "9", FRIEND_FRIEND)
 
     }
 

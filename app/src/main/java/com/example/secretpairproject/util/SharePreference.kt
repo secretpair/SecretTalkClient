@@ -32,7 +32,7 @@ object SharePreferenceManager {
 
     fun getString(context: Context, key: String): String {
         val pref = PreferenceManager.getDefaultSharedPreferences(context)
-        return pref.getString(key, " ")
+        return pref.getString(key, " ")!!
 
     }
 

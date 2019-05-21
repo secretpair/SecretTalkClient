@@ -13,18 +13,21 @@ interface FriendDAO {
     @Update
     fun updateAllFriend(vararg friends: FriendDTO)
 
-    @Delete
-    fun deleteFriend(vararg friends: FriendDTO)
-
-    @Query("SELECT * FROM friend")
-    fun loadAllFriends(): LiveData<List<FriendDTO>>
-
-    @Query("SELECT * FROM friend WHERE name LIKE '%' || :keyword || '%' ")
-    fun loadNameLikeFriend(keyword: String): LiveData<List<FriendDTO>>
-
     @Query("UPDATE friend SET customName=:customName WHERE email=:email")
     fun updateCustomName(email: String, customName: String)
 
+    @Delete
+    fun deleteFriend(vararg friends: FriendDTO)
+
+
+    @Query("SELECT * FROM friend ORDER BY viewType")
+    fun getAllFriends(): LiveData<List<FriendDTO>>
+
+    @Query("SELECT * FROM friend WHERE name LIKE '%' || :keyword || '%' ")
+    fun getNameLikeFriend(keyword: String): LiveData<List<FriendDTO>>
+
+    @Query("SELECT * FROM friend WHERE viewType=0")
+    fun getFriendMe(): LiveData<List<FriendDTO>>
 
 
 
