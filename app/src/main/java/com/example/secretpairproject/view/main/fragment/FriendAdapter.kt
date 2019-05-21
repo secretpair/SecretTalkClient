@@ -5,33 +5,35 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.secretpairproject.R
+import com.example.secretpairproject.config.BIRTHDAY_HEADER
+import com.example.secretpairproject.config.ME
+import com.example.secretpairproject.config.MODULATION_IS_HEADER
 import com.example.secretpairproject.config.RECOMMEND_FRIEND
 import com.example.secretpairproject.model.friend.FriendDTO
 import kotlinx.android.synthetic.main.recycler_item_friend.view.*
 import kotlinx.android.synthetic.main.recycler_item_friend_header.view.*
 import kotlinx.android.synthetic.main.recycler_item_friend_me.view.*
 
-class FriendAdapter(
-    private val list: List<FriendDTO>
-    , private val click: (String) -> Unit
-) : RecyclerView.Adapter<FriendAdapter.BaseViewHolder>() {
+class FriendAdapter(private val click: (String) -> Unit) :
+    RecyclerView.Adapter<FriendAdapter.BaseViewHolder>() {
 
+
+    private val list: MutableList<FriendDTO> = ArrayList()
 
     override fun getItemViewType(position: Int): Int {
         return list[position].viewType
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         return when {
-            viewType == 50 -> MyViewHolder(
+            viewType == ME -> MyViewHolder(
                 LayoutInflater.from(parent.context).inflate(
                     R.layout.recycler_item_friend_me,
                     parent,
                     false
                 )
             )
-            viewType % 100 == 0 -> HeaderViewHolder(
+            viewType % MODULATION_IS_HEADER == 0 -> HeaderViewHolder(
                 LayoutInflater.from(parent.context).inflate(R.layout.recycler_item_friend_header, parent, false)
             )
             else -> FriendViewHolder(
@@ -44,7 +46,6 @@ class FriendAdapter(
         }
 
     }
-
 
     override fun getItemCount() = list.size
 
@@ -92,16 +93,36 @@ class FriendAdapter(
 
     inner class HeaderViewHolder(view: View) : BaseViewHolder(view) {
         override fun setView(data: FriendDTO) {
-            itemView.friend_header_title.text = data.name
+            if (data.viewType == BIRTHDAY_HEADER)
+                itemView.friend_header_title.text = data.name
         }
-
-
     }
-
 
     abstract inner class BaseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         abstract fun setView(data: FriendDTO)
     }
+
+    fun updateMe(me: FriendDTO) {
+        val index = list.indexOf(me)
+        if (index != -1) {
+            list[list.indexOf(me)] = me
+        } else {
+            list[0] = me
+        }
+    }
+
+    fun updateNormalFriend(friends: List<FriendDTO>) {
+        for (friend in friends) {
+            val index = list.indexOf(friend)
+            if (index != -1) {
+                list[index] = friend
+            } else {
+                list.add(friend)
+            }
+        }
+    }
+
+
 }
 
 

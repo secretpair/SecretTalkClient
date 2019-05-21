@@ -7,6 +7,7 @@ import androidx.room.*
 @Dao
 interface FriendDAO {
 
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertFriend(vararg friends: FriendDTO)
 
@@ -20,15 +21,20 @@ interface FriendDAO {
     fun deleteFriend(vararg friends: FriendDTO)
 
 
+    @Query("SELECT * FROM friend WHERE viewType=:me")
+    fun getMyInfo(me: Int): FriendDTO
+
+
+    @Query("SELECT * FROM friend WHERE viewType=:normalFriend")
+    fun getNormalFriendList(normalFriend: Int): List<FriendDTO>
+
+
+    @Query("SELECT * FROM friend WHERE viewType=:normalFriend AND name LIKE '%' || :keyword || '%' ")
+    fun getNameLikeFriend(normalFriend: Int, keyword: String): List<FriendDTO>
+
     @Query("SELECT * FROM friend ORDER BY viewType")
-    fun getAllFriends(): LiveData<List<FriendDTO>>
-
-    @Query("SELECT * FROM friend WHERE name LIKE '%' || :keyword || '%' ")
-    fun getNameLikeFriend(keyword: String): LiveData<List<FriendDTO>>
-
-    @Query("SELECT * FROM friend WHERE viewType=0")
-    fun getFriendMe(): LiveData<List<FriendDTO>>
-
+    fun getAllInfo(): List<FriendDTO>
 
 
 }
+

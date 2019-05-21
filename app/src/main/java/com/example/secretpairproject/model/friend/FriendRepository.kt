@@ -2,38 +2,28 @@ package com.example.secretpairproject.model.friend
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import io.reactivex.Flowable
+import com.example.secretpairproject.config.FRIEND_FRIEND
+import com.example.secretpairproject.config.ME
 
 
 class FriendRepository(application: Application) {
-
 
     private val friendDao: FriendDAO by lazy {
         val db = FriendRoomDatabase.getInstance(application)!!
         db.friendDao()
     }
 
-    fun getLocalAllInfo() : LiveData<List<FriendDTO>>{
-        return friendDao.getAllFriends()
+
+    fun getLocalMyInfo(): FriendDTO {
+        return friendDao.getMyInfo(ME)
     }
 
-
-    fun getLocalMe(): LiveData<List<FriendDTO>> {
-        return friendDao.getFriendMe()
+    fun getLocalNormalFriend(): List<FriendDTO> {
+        return friendDao.getNormalFriendList(FRIEND_FRIEND)
     }
 
-    fun getLocalAllFriend(): LiveData<List<FriendDTO>> {
-        return friendDao.getAllFriends()
+    fun getLocalNormalFriendSearch(keyword: String): List<FriendDTO> {
+        return friendDao.getNameLikeFriend(FRIEND_FRIEND, keyword)
     }
-
-    fun insertFriend(friend: FriendDTO): Flowable<Unit> {
-        return Flowable.fromCallable { friendDao.insertFriend(friend) }
-    }
-
-
-    fun deleteFriend(vararg deleteFriends: FriendDTO): Flowable<Unit> {
-        return Flowable.fromCallable { friendDao.deleteFriend(*deleteFriends) }
-    }
-
 
 }

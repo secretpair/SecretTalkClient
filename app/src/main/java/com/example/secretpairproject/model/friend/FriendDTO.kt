@@ -14,4 +14,10 @@ data class FriendDTO(
     val music: String,
     val customName: String,
     val viewType: Int
-)
+) : Comparable<FriendDTO> {
+    override fun compareTo(other: FriendDTO): Int = viewType - other.viewType
+    override fun equals(other: Any?): Boolean = email == (other as FriendDTO).email
+    override fun hashCode(): Int {
+        return super.hashCode()
+    }
+}
