@@ -29,10 +29,15 @@ object FriendFragment : Fragment() {
             Toast.makeText(context!!.applicationContext, "${email}님", Toast.LENGTH_SHORT).show()
         }
 
+
+
         view.friend_recycler_view.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         view.friend_recycler_view.adapter = adapter
 
 
+        friendViewModel.headerData.observe(this, Observer {
+            adapter.loadHeader(it)
+        })
 
         friendViewModel.myData.observe(this, Observer {
             adapter.updateMe(it)
@@ -40,13 +45,16 @@ object FriendFragment : Fragment() {
 
         })
 
-        friendViewModel.middleData.observe(this, Observer {
-            adapter.updateMiddleList(it)
+        friendViewModel.birthDayData.observe(this, Observer {
             adapter.notifyDataSetChanged()
 
         })
 
-        friendViewModel.normalFriendList.observe(this, Observer {
+        friendViewModel.recommendData.observe(this, Observer {
+            adapter.notifyDataSetChanged()
+        })
+
+        friendViewModel.normalFriendData.observe(this, Observer {
             adapter.updateNormalFriend(it)
             adapter.notifyDataSetChanged()
         })
@@ -59,16 +67,66 @@ object FriendFragment : Fragment() {
     fun test() {
 
         friendViewModel.insertFriend(FriendDTO("alstn225@naver.com", "배민수", "silvercong", " ", " ", " ", ME))
-        friendViewModel.insertFriend(FriendDTO("BIRTHDAY_HEADER", "오늘 생일인 친구", "", " ", " ", " ", BIRTHDAY_HEADER))
-        friendViewModel.insertFriend(FriendDTO("RECOMMEND_HEADER", "추천친구", "", " ", " ", " ", RECOMMEND_HEADER))
-        friendViewModel.insertFriend(FriendDTO("RECOMMEND_FRIEND", "새로운 친구를 만나보세요!", "", " ", " ", " ", RECOMMEND_FRIEND))
-        friendViewModel.insertFriend(FriendDTO("FRIEND_HEADER", "친구", "", " ", " ", " ", FRIEND_HEADER))
-        friendViewModel.insertFriend(FriendDTO("alstn211@naver.com", "김민수1", "silvercong", " ", " ", " ", FRIEND_FRIEND))
+        friendViewModel.insertFriend(FriendDTO("$BIRTHDAY_HEADER", "오늘 생일인 친구", "", " ", " ", " ", BIRTHDAY_HEADER))
+        friendViewModel.insertFriend(FriendDTO("$RECOMMEND_HEADER", "추천친구", "", " ", " ", " ", RECOMMEND_HEADER))
+        friendViewModel.insertFriend(
+            FriendDTO(
+                "$RECOMMEND_FRIEND",
+                "새로운 친구를 만나보세요!",
+                "",
+                " ",
+                " ",
+                " ",
+                RECOMMEND_FRIEND
+            )
+        )
+        friendViewModel.insertFriend(FriendDTO("$FRIEND_HEADER", "친구", "", " ", " ", " ", FRIEND_HEADER))
+        friendViewModel.insertFriend(
+            FriendDTO(
+                "alstn211@naver.com",
+                "김민수1",
+                "silvercong",
+                " ",
+                " ",
+                " ",
+                FRIEND_FRIEND
+            )
+        )
         friendViewModel.insertFriend(FriendDTO("alstn212@naver.com", "김민수2", "", " ", " ", " ", FRIEND_FRIEND))
-        friendViewModel.insertFriend(FriendDTO("alstn213@naver.com", "김민수4", "silvercong", " ", " ", " ", FRIEND_FRIEND))
+        friendViewModel.insertFriend(
+            FriendDTO(
+                "alstn213@naver.com",
+                "김민수4",
+                "silvercong",
+                " ",
+                " ",
+                " ",
+                FRIEND_FRIEND
+            )
+        )
         friendViewModel.insertFriend(FriendDTO("alstn214@naver.com", "배민수1", "", " ", " ", " ", FRIEND_FRIEND))
-        friendViewModel.insertFriend(FriendDTO("alstn215@naver.com", "배민수2", "silvercong", " ", " ", " ", FRIEND_FRIEND))
-        friendViewModel.insertFriend(FriendDTO("alstn216@naver.com", "배민수3", "silvercong", " ", " ", " ", FRIEND_FRIEND))
+        friendViewModel.insertFriend(
+            FriendDTO(
+                "alstn215@naver.com",
+                "배민수2",
+                "silvercong",
+                " ",
+                " ",
+                " ",
+                FRIEND_FRIEND
+            )
+        )
+        friendViewModel.insertFriend(
+            FriendDTO(
+                "alstn216@naver.com",
+                "배민수3",
+                "silvercong",
+                " ",
+                " ",
+                " ",
+                FRIEND_FRIEND
+            )
+        )
 
     }
 

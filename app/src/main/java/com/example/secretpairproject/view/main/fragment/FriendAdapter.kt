@@ -5,10 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.secretpairproject.R
-import com.example.secretpairproject.config.BIRTHDAY_HEADER
-import com.example.secretpairproject.config.ME
-import com.example.secretpairproject.config.MODULATION_IS_HEADER
+import com.example.secretpairproject.config.*
 import com.example.secretpairproject.model.friend.FriendDTO
+import com.example.secretpairproject.util.SharePreferenceManager
 import kotlinx.android.synthetic.main.recycler_item_friend.view.*
 import kotlinx.android.synthetic.main.recycler_item_friend_header.view.*
 import kotlinx.android.synthetic.main.recycler_item_friend_me.view.*
@@ -16,13 +15,31 @@ import kotlinx.android.synthetic.main.recycler_item_friend_me.view.*
 class FriendAdapter(private val click: (String) -> Unit) :
     RecyclerView.Adapter<FriendAdapter.BaseViewHolder>() {
 
-
     private val list: MutableList<FriendDTO> = ArrayList()
 
-    private val myInfo: MutableList<FriendDTO> = ArrayList()
-    private val middleData: MutableList<FriendDTO> = ArrayList()
-    private val friendList: MutableList<FriendDTO> = ArrayList()
+    private val myInfo: MutableList<FriendDTO>
+    private val birthDayList: MutableList<FriendDTO>
+    private val recommendList: MutableList<FriendDTO>
+    private val friendList: MutableList<FriendDTO>
 
+    private val visibleMap: HashMap<String, List<FriendDTO>>
+    private val invisibleMap: HashMap<String, List<FriendDTO>>
+
+
+    init {
+        myInfo = ArrayList()
+        recommendList = ArrayList()
+        friendList = ArrayList()
+        birthDayList = ArrayList()
+
+        visibleMap = HashMap()
+        invisibleMap = HashMap()
+
+        visibleMap["$ME"] = myInfo
+        visibleMap["$FRIEND_HEADER"] = friendList
+        visibleMap["$BIRTHDAY_HEADER"] = birthDayList
+        visibleMap["$RECOMMEND_HEADER"] = recommendList
+    }
 
     override fun getItemViewType(position: Int): Int {
         return list[position].viewType
@@ -37,24 +54,43 @@ class FriendAdapter(private val click: (String) -> Unit) :
                     false
                 )
             )
-            viewType % MODULATION_IS_HEADER == 0 -> HeaderViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.recycler_item_friend_header, parent, false)
-            )
-            else -> FriendViewHolder(
-                LayoutInflater.from(parent.context).inflate(
-                    R.layout.recycler_item_friend,
-                    parent,
-                    false
+            viewType % MODULATION_IS_HEADER == 0 -> {
+                val collapseCheck = SharePreferenceManager.getBoolean(parent.context, "$viewType")
+
+                if (collapseCheck) {
+                    val tmpList = visibleMap.remove("$viewType")
+                    invisibleMap["$viewType"] = tmpList!!
+                }
+
+
+                return HeaderViewHolder(
+                    LayoutInflater.from(parent.context).inflate(
+                        R.layout.recycler_item_friend_header,
+                        parent,
+                        false
+                    )
                 )
-            )
+            }
+            else -> {
+                FriendViewHolder(
+                    LayoutInflater.from(parent.context).inflate(
+                        R.layout.recycler_item_friend,
+                        parent,
+                        false
+                    )
+                )
+            }
         }
 
     }
 
     override fun getItemCount(): Int {
         list.clear()
+
         list.addAll(myInfo)
-        list.addAll(middleData)
+
+        list.addAll(birthDayList)
+        list.addAll(recommendList)
         list.addAll(friendList)
 
         return list.size
@@ -64,6 +100,7 @@ class FriendAdapter(private val click: (String) -> Unit) :
     override fun onBindViewHolder(holderFriend: BaseViewHolder, position: Int) {
         val item = list[position]
         holderFriend.setView(item)
+
 
     }
 
@@ -89,7 +126,6 @@ class FriendAdapter(private val click: (String) -> Unit) :
         override fun setView(data: FriendDTO) {
 
             itemView.setOnClickListener { click }
-
             itemView.friend_name_text_view.text = data.name
 
             if (data.stateMessage.isNotEmpty()) {
@@ -119,9 +155,18 @@ class FriendAdapter(private val click: (String) -> Unit) :
     }
 
 
-    fun updateMiddleList(middleList: List<FriendDTO>) {
-        middleData.clear()
-        middleData.addAll(middleList)
+    fun loadHeader(header: List<FriendDTO>) {
+        list.addAll(header)
+    }
+
+    fun updateRecommend(recommlist: List<FriendDTO>) {
+        recommendList.clear()
+        recommendList.addAll(recommlist)
+    }
+
+    fun updateBirthday(birthList: List<FriendDTO>) {
+        birthDayList.clear()
+        birthDayList.addAll(birthList)
     }
 
     fun updateMe(me: FriendDTO) {
@@ -132,6 +177,19 @@ class FriendAdapter(private val click: (String) -> Unit) :
     fun updateNormalFriend(friends: List<FriendDTO>) {
         friendList.clear()
         friendList.addAll(friends)
+    }
+
+    private fun changeItemUpdate(viewType: Int, updateList: List<FriendDTO>) {
+
+
+        if(visibleMap.containsKey("$viewType")){
+            //보이는 상태면
+
+        }else{
+            //안보이는 상태면
+        }
+
+
     }
 
 

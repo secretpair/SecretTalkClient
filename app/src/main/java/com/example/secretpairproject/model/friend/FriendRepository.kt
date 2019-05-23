@@ -16,6 +16,11 @@ class FriendRepository(application: Application) {
     }
 
 
+    //Only Local
+    fun getHeader(): Flowable<List<FriendDTO>> {
+        return Flowable.fromCallable { friendDao.getHeader() }
+    }
+
     fun getLocalMyInfo(): Flowable<FriendDTO> {
         return Flowable.fromCallable { friendDao.getMyInfo(ME) }
     }
@@ -28,10 +33,17 @@ class FriendRepository(application: Application) {
         return Flowable.fromCallable { friendDao.getNameLikeFriend(FRIEND_FRIEND, keyword) }
     }
 
-    fun getBetweenMeAndFriendList(): Flowable<List<FriendDTO>> {
-        return Flowable.fromCallable { friendDao.getBetweenMeAndFriendList(BIRTHDAY_HEADER, FRIEND_HEADER) }
+    fun getLocalFriendByViewType(viewType: Int): Flowable<FriendDTO> {
+        return Flowable.fromCallable { friendDao.getFriendByViewType(viewType)}
     }
 
+
+
+    //Network
+
+
+
+    //Local + Network
     fun insertFriend(friendDTO: FriendDTO): Flowable<Unit> {
         return Flowable.fromCallable { friendDao.insertFriend(friendDTO) }
     }
