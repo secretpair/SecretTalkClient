@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+<color name="colorPrimary">#008577</color>
+<color name="colorPrimaryDark">#00574B</color>
+<color name="colorAccent">#D81B60</color>
 
-    <color name="bottom_select">#83ccdd</color>
-    <color name="bottom_non_select">#c8c8c8</color>
+<color name="bottom_select">#83ccdd</color>
+<color name="bottom_non_select">#c8c8c8</color>
 
-    
-    <color name="chat_title_pink">#f5b9b9</color>
-    <color name="send_message">#6ccee0</color>
-    <color name="chat_background">#f6f6f6</color>
 
-    <color name="white">#ffffff</color>
-    <color name="black">#000000</color>
-    <color name="lowgray">#50AAAAAA</color>
+<color name="chat_title_pink">#f5b9b9</color>
+<color name="send_message">#6ccee0</color>
+<color name="chat_background">#f6f6f6</color>
+
+<color name="white">#ffffff</color>
+<color name="black">#000000</color>
+<color name="lowgray">#50AAAAAA</color>
+
+<color name="background_yellow">#c8ac40</color>
+    <color name="profile_btn_gray">#f6f6f6</color>
 
 
 </resources>

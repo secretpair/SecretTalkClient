@@ -9,7 +9,6 @@
         android:id="@+id/friend_image_view"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-
         android:src="@drawable/circle_sample"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,24 +29,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginBottom="5dp"
         android:text="배민수"
         android:textColor="#4a4a4a"
         android:textSize="17dp"
-        app:layout_constraintBottom_toBottomOf="@+id/recycler_friend_guide1"
+        app:layout_constraintBottom_toTopOf="@+id/friend_state_text_view"
         app:layout_constraintStart_toEndOf="@+id/friend_image_view"
-        tools:ignore="SpUsage" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/friend_state_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="5dp"
-        android:text="정말 나쁜 사람이다"
+        android:text="상태메시지입니다."
         android:textColor="#9d9d9d"
         android:textSize="13dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/friend_image_view"
-        app:layout_constraintTop_toTopOf="@+id/recycler_friend_guide1" />
+        app:layout_constraintTop_toBottomOf="@+id/friend_name_text_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

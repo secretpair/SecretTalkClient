@@ -21,15 +21,15 @@ interface FriendDAO {
     fun deleteFriend(vararg friends: FriendDTO)
 
 
-    @Query("SELECT * FROM friend WHERE viewType=:me")
+    @Query("SELECT * FROM friend WHERE viewType=:me ORDER BY viewType")
     fun getMyInfo(me: Int): FriendDTO
 
 
-    @Query("SELECT * FROM friend WHERE viewType=:normalFriend")
+    @Query("SELECT * FROM friend WHERE viewType=:normalFriend ORDER BY viewType")
     fun getNormalFriendList(normalFriend: Int): List<FriendDTO>
 
 
-    @Query("SELECT * FROM friend WHERE viewType=:normalFriend AND name LIKE '%' || :keyword || '%' ")
+    @Query("SELECT * FROM friend WHERE viewType=:normalFriend AND name LIKE '%' || :keyword || '%' ORDER BY viewType")
     fun getNameLikeFriend(normalFriend: Int, keyword: String): List<FriendDTO>
 
     @Query("SELECT * FROM friend ORDER BY viewType")

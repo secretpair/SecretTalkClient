@@ -1,7 +1,6 @@
 package com.example.secretpairproject.view.main.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +41,7 @@ object FriendFragment : Fragment() {
         })
 
         friendViewModel.middleData.observe(this, Observer {
-            adapter.addMiddleList(it)
+            adapter.updateMiddleList(it)
             adapter.notifyDataSetChanged()
 
         })
@@ -51,8 +50,6 @@ object FriendFragment : Fragment() {
             adapter.updateNormalFriend(it)
             adapter.notifyDataSetChanged()
         })
-
-
 
         test()
         return view
@@ -67,9 +64,9 @@ object FriendFragment : Fragment() {
         friendViewModel.insertFriend(FriendDTO("RECOMMEND_FRIEND", "새로운 친구를 만나보세요!", "", " ", " ", " ", RECOMMEND_FRIEND))
         friendViewModel.insertFriend(FriendDTO("FRIEND_HEADER", "친구", "", " ", " ", " ", FRIEND_HEADER))
         friendViewModel.insertFriend(FriendDTO("alstn211@naver.com", "김민수1", "silvercong", " ", " ", " ", FRIEND_FRIEND))
-        friendViewModel.insertFriend(FriendDTO("alstn212@naver.com", "김민수2", "silvercong", " ", " ", " ", FRIEND_FRIEND))
+        friendViewModel.insertFriend(FriendDTO("alstn212@naver.com", "김민수2", "", " ", " ", " ", FRIEND_FRIEND))
         friendViewModel.insertFriend(FriendDTO("alstn213@naver.com", "김민수4", "silvercong", " ", " ", " ", FRIEND_FRIEND))
-        friendViewModel.insertFriend(FriendDTO("alstn214@naver.com", "배민수1", "silvercong", " ", " ", " ", FRIEND_FRIEND))
+        friendViewModel.insertFriend(FriendDTO("alstn214@naver.com", "배민수1", "", " ", " ", " ", FRIEND_FRIEND))
         friendViewModel.insertFriend(FriendDTO("alstn215@naver.com", "배민수2", "silvercong", " ", " ", " ", FRIEND_FRIEND))
         friendViewModel.insertFriend(FriendDTO("alstn216@naver.com", "배민수3", "silvercong", " ", " ", " ", FRIEND_FRIEND))
 
