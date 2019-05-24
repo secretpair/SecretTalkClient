@@ -60,6 +60,11 @@ object FriendFragment : Fragment() {
         })
 
         test()
+
+        friendViewModel.getHeader()
+        friendViewModel.getMyInfo()
+        friendViewModel.getNormalFriendList()
+
         return view
     }
 

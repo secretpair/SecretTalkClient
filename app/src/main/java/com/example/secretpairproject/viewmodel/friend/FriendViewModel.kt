@@ -93,7 +93,6 @@ class FriendViewModel(application: Application) : BaseDisposableViewModel(applic
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
                 getMyInfo()
-//                getBetweenMeAndFriendList()
                 getNormalFriendList()
             })
     }
@@ -105,7 +104,6 @@ class FriendViewModel(application: Application) : BaseDisposableViewModel(applic
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     getMyInfo()
-//                    getBetweenMeAndFriendList()
                     getNormalFriendList()
                 }
         )

@@ -1,5 +1,6 @@
 package com.example.secretpairproject.view.main.fragment
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,13 +18,14 @@ class FriendAdapter(private val click: (String) -> Unit) :
 
     private val list: MutableList<FriendDTO> = ArrayList()
 
+    private val headerList: MutableList<FriendDTO>
     private val myInfo: MutableList<FriendDTO>
     private val birthDayList: MutableList<FriendDTO>
     private val recommendList: MutableList<FriendDTO>
     private val friendList: MutableList<FriendDTO>
 
-    private val visibleMap: HashMap<String, List<FriendDTO>>
-    private val invisibleMap: HashMap<String, List<FriendDTO>>
+    private val visibleMap: HashMap<String, MutableList<FriendDTO>>
+    private val invisibleMap: HashMap<String, MutableList<FriendDTO>>
 
 
     init {
@@ -31,10 +33,12 @@ class FriendAdapter(private val click: (String) -> Unit) :
         recommendList = ArrayList()
         friendList = ArrayList()
         birthDayList = ArrayList()
+        headerList = ArrayList()
 
         visibleMap = HashMap()
         invisibleMap = HashMap()
 
+        visibleMap["$HEADER"] = headerList
         visibleMap["$ME"] = myInfo
         visibleMap["$FRIEND_HEADER"] = friendList
         visibleMap["$BIRTHDAY_HEADER"] = birthDayList
@@ -86,13 +90,12 @@ class FriendAdapter(private val click: (String) -> Unit) :
 
     override fun getItemCount(): Int {
         list.clear()
-
+        list.addAll(headerList)
         list.addAll(myInfo)
-
-        list.addAll(birthDayList)
-        list.addAll(recommendList)
-        list.addAll(friendList)
-
+        for (item in visibleMap.keys) {
+            visibleMap[item]?.let { list.addAll(it) }
+        }
+        list.sort()
         return list.size
 
     }
@@ -156,40 +159,47 @@ class FriendAdapter(private val click: (String) -> Unit) :
 
 
     fun loadHeader(header: List<FriendDTO>) {
-        list.addAll(header)
+        changeItemUpdate(HEADER, *header.toTypedArray())
     }
 
     fun updateRecommend(recommlist: List<FriendDTO>) {
-        recommendList.clear()
-        recommendList.addAll(recommlist)
+        changeItemUpdate(RECOMMEND_HEADER, *recommlist.toTypedArray())
     }
 
     fun updateBirthday(birthList: List<FriendDTO>) {
-        birthDayList.clear()
-        birthDayList.addAll(birthList)
+        changeItemUpdate(BIRTHDAY_HEADER, *birthList.toTypedArray())
     }
 
     fun updateMe(me: FriendDTO) {
-        myInfo.clear()
-        myInfo.add(me)
+        changeItemUpdate(ME, me)
     }
 
     fun updateNormalFriend(friends: List<FriendDTO>) {
-        friendList.clear()
-        friendList.addAll(friends)
+        changeItemUpdate(FRIEND_HEADER, *friends.toTypedArray())
     }
 
-    private fun changeItemUpdate(viewType: Int, updateList: List<FriendDTO>) {
+    private fun changeItemUpdate(viewType: Int, vararg updateList: FriendDTO) {
 
 
-        if(visibleMap.containsKey("$viewType")){
+        if (visibleMap.containsKey("$viewType")) {
             //보이는 상태면
 
-        }else{
-            //안보이는 상태면
+            val mapList = visibleMap["$viewType"]
+            for (item in updateList) {
+                val index = mapList!!.indexOf(item)
+                if (index != -1) {
+                    mapList[index] = item
+                    list[list.indexOf(item)] = item
+                }
+            }
+
+        } else {
+
+            val mapList = invisibleMap["$viewType"]
+            for (item in updateList) {
+                mapList!![mapList.indexOf(item)] = item
+            }
         }
-
-
     }
 
 
