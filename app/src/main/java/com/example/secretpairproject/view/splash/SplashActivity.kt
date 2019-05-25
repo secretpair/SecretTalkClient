@@ -30,14 +30,14 @@ class SplashActivity : AppCompatActivity() {
 
         SharePreferenceManager.put(this, "email", "kluge0221@gmail.com")
 
+
+
         val source = Single.just<String>(SharePreferenceManager.getString(this, "email"))
             .delay(1000, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 
         source.subscribe { it ->
-
-
             if (it.isBlank()) {
                 //TODO 로그인 이동
             } else {

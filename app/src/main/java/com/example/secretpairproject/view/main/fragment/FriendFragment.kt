@@ -29,8 +29,6 @@ object FriendFragment : Fragment() {
             Toast.makeText(context!!.applicationContext, "${email}님", Toast.LENGTH_SHORT).show()
         }
 
-
-
         view.friend_recycler_view.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         view.friend_recycler_view.adapter = adapter
 
@@ -38,7 +36,6 @@ object FriendFragment : Fragment() {
         friendViewModel.myData.observe(this, Observer {
             adapter.updateMyInfo(it)
             adapter.notifyDataSetChanged()
-
         })
 
         friendViewModel.birthDayData.observe(this, Observer {
@@ -74,7 +71,7 @@ object FriendFragment : Fragment() {
             FriendDTO(
                 "$RECOMMEND_FRIEND",
                 "새로운 친구를 만나보세요!",
-                "",
+                "렛츠고",
                 " ",
                 " ",
                 " ",
@@ -86,7 +83,7 @@ object FriendFragment : Fragment() {
             FriendDTO(
                 "alstn211@naver.com",
                 "김민수1",
-                "silvercong",
+                "",
                 " ",
                 " ",
                 " ",
@@ -98,7 +95,7 @@ object FriendFragment : Fragment() {
             FriendDTO(
                 "alstn213@naver.com",
                 "김민수4",
-                "silvercong",
+                "카카오톡 클론",
                 " ",
                 " ",
                 " ",
@@ -110,7 +107,7 @@ object FriendFragment : Fragment() {
             FriendDTO(
                 "alstn215@naver.com",
                 "배민수2",
-                "silvercong",
+                "상태메시지",
                 " ",
                 " ",
                 " ",
@@ -121,7 +118,7 @@ object FriendFragment : Fragment() {
             FriendDTO(
                 "alstn216@naver.com",
                 "배민수3",
-                "silvercong",
+                "",
                 " ",
                 " ",
                 " ",

@@ -16,9 +16,10 @@ class FriendViewModel(application: Application) : BaseDisposableViewModel(applic
     private val _myData = MutableLiveData<FriendDTO>()
     private val _birthDayData = MutableLiveData<List<FriendDTO>>()
     private val _recommendData = MutableLiveData<List<FriendDTO>>()
-
-
     private val _normalFriendData = MutableLiveData<List<FriendDTO>>()
+
+    private val mutableMap: MutableMap<String, MutableLiveData<FriendDTO>> = HashMap()
+
     val myData: LiveData<FriendDTO> get() = _myData
     val birthDayData: LiveData<List<FriendDTO>> get() = _birthDayData
     val recommendData: LiveData<List<FriendDTO>> get() = _recommendData
@@ -38,7 +39,9 @@ class FriendViewModel(application: Application) : BaseDisposableViewModel(applic
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    _myData.postValue(it)
+                    if (it != null) {
+                        _myData.postValue(it)
+                    }
                 })
 
 
@@ -50,7 +53,9 @@ class FriendViewModel(application: Application) : BaseDisposableViewModel(applic
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    _birthDayData.postValue(it)
+                    if (it != null) {
+                        _birthDayData.postValue(it)
+                    }
                 }
         )
     }
@@ -61,7 +66,9 @@ class FriendViewModel(application: Application) : BaseDisposableViewModel(applic
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    _recommendData.postValue(it)
+                    if (it != null) {
+                        _recommendData.postValue(it)
+                    }
                 }
         )
     }
@@ -73,7 +80,9 @@ class FriendViewModel(application: Application) : BaseDisposableViewModel(applic
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    _normalFriendData.postValue(it)
+                    if (it != null) {
+                        _normalFriendData.postValue(it)
+                    }
                 }
         )
     }
@@ -83,7 +92,10 @@ class FriendViewModel(application: Application) : BaseDisposableViewModel(applic
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-
+                getMyInfo()
+                getBirthDayList()
+                getRecommendData()
+                getNormalFriendList()
             })
     }
 
@@ -94,6 +106,8 @@ class FriendViewModel(application: Application) : BaseDisposableViewModel(applic
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     getMyInfo()
+                    getBirthDayList()
+                    getRecommendData()
                     getNormalFriendList()
                 }
         )
