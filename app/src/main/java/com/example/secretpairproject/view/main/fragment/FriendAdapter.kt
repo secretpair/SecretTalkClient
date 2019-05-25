@@ -1,6 +1,5 @@
 package com.example.secretpairproject.view.main.fragment
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.secretpairproject.R
 import com.example.secretpairproject.config.*
 import com.example.secretpairproject.model.friend.FriendDTO
-import com.example.secretpairproject.util.SharePreferenceManager
 import kotlinx.android.synthetic.main.recycler_item_friend.view.*
 import kotlinx.android.synthetic.main.recycler_item_friend_header.view.*
 import kotlinx.android.synthetic.main.recycler_item_friend_me.view.*
@@ -18,14 +16,11 @@ class FriendAdapter(private val click: (String) -> Unit) :
 
     private val list: MutableList<FriendDTO> = ArrayList()
 
-    private val headerList: MutableList<FriendDTO>
+
     private val myInfo: MutableList<FriendDTO>
     private val birthDayList: MutableList<FriendDTO>
     private val recommendList: MutableList<FriendDTO>
     private val friendList: MutableList<FriendDTO>
-
-    private val visibleMap: HashMap<String, MutableList<FriendDTO>>
-    private val invisibleMap: HashMap<String, MutableList<FriendDTO>>
 
 
     init {
@@ -33,16 +28,6 @@ class FriendAdapter(private val click: (String) -> Unit) :
         recommendList = ArrayList()
         friendList = ArrayList()
         birthDayList = ArrayList()
-        headerList = ArrayList()
-
-        visibleMap = HashMap()
-        invisibleMap = HashMap()
-
-        visibleMap["$HEADER"] = headerList
-        visibleMap["$ME"] = myInfo
-        visibleMap["$FRIEND_HEADER"] = friendList
-        visibleMap["$BIRTHDAY_HEADER"] = birthDayList
-        visibleMap["$RECOMMEND_HEADER"] = recommendList
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -58,15 +43,7 @@ class FriendAdapter(private val click: (String) -> Unit) :
                     false
                 )
             )
-            viewType % MODULATION_IS_HEADER == 0 -> {
-                val collapseCheck = SharePreferenceManager.getBoolean(parent.context, "$viewType")
-
-                if (collapseCheck) {
-                    val tmpList = visibleMap.remove("$viewType")
-                    invisibleMap["$viewType"] = tmpList!!
-                }
-
-
+            viewType % HEADER_MODULATION_CHECK_VALUE == HEADER -> {
                 return HeaderViewHolder(
                     LayoutInflater.from(parent.context).inflate(
                         R.layout.recycler_item_friend_header,
@@ -85,16 +62,14 @@ class FriendAdapter(private val click: (String) -> Unit) :
                 )
             }
         }
-
     }
 
     override fun getItemCount(): Int {
         list.clear()
-        list.addAll(headerList)
         list.addAll(myInfo)
-        for (item in visibleMap.keys) {
-            visibleMap[item]?.let { list.addAll(it) }
-        }
+        list.addAll(birthDayList)
+        list.addAll(recommendList)
+        list.addAll(friendList)
         list.sort()
         return list.size
 
@@ -103,8 +78,6 @@ class FriendAdapter(private val click: (String) -> Unit) :
     override fun onBindViewHolder(holderFriend: BaseViewHolder, position: Int) {
         val item = list[position]
         holderFriend.setView(item)
-
-
     }
 
     inner class MyViewHolder(view: View) : BaseViewHolder(view) {
@@ -157,49 +130,25 @@ class FriendAdapter(private val click: (String) -> Unit) :
         abstract fun setView(data: FriendDTO)
     }
 
-
-    fun loadHeader(header: List<FriendDTO>) {
-        changeItemUpdate(HEADER, *header.toTypedArray())
+    fun updateMyInfo(me: FriendDTO) {
+        myInfo.clear()
+        myInfo.add(me)
     }
 
-    fun updateRecommend(recommlist: List<FriendDTO>) {
-        changeItemUpdate(RECOMMEND_HEADER, *recommlist.toTypedArray())
+    fun updateBirthDayList(list: List<FriendDTO>) {
+        birthDayList.clear()
+        birthDayList.addAll(list)
     }
 
-    fun updateBirthday(birthList: List<FriendDTO>) {
-        changeItemUpdate(BIRTHDAY_HEADER, *birthList.toTypedArray())
+    fun updateRecommendList(list: List<FriendDTO>) {
+        recommendList.clear()
+        recommendList.addAll(list)
     }
 
-    fun updateMe(me: FriendDTO) {
-        changeItemUpdate(ME, me)
-    }
 
-    fun updateNormalFriend(friends: List<FriendDTO>) {
-        changeItemUpdate(FRIEND_HEADER, *friends.toTypedArray())
-    }
-
-    private fun changeItemUpdate(viewType: Int, vararg updateList: FriendDTO) {
-
-
-        if (visibleMap.containsKey("$viewType")) {
-            //보이는 상태면
-
-            val mapList = visibleMap["$viewType"]
-            for (item in updateList) {
-                val index = mapList!!.indexOf(item)
-                if (index != -1) {
-                    mapList[index] = item
-                    list[list.indexOf(item)] = item
-                }
-            }
-
-        } else {
-
-            val mapList = invisibleMap["$viewType"]
-            for (item in updateList) {
-                mapList!![mapList.indexOf(item)] = item
-            }
-        }
+    fun updateFriendList(list: List<FriendDTO>) {
+        friendList.clear()
+        friendList.addAll(list)
     }
 
 

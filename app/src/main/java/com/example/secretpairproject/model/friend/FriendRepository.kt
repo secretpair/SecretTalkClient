@@ -1,10 +1,7 @@
 package com.example.secretpairproject.model.friend
 
 import android.app.Application
-import com.example.secretpairproject.config.BIRTHDAY_HEADER
-import com.example.secretpairproject.config.FRIEND_FRIEND
-import com.example.secretpairproject.config.FRIEND_HEADER
-import com.example.secretpairproject.config.ME
+import com.example.secretpairproject.config.*
 import io.reactivex.Flowable
 
 
@@ -17,30 +14,30 @@ class FriendRepository(application: Application) {
 
 
     //Only Local
-    fun getHeader(): Flowable<List<FriendDTO>> {
-        return Flowable.fromCallable { friendDao.getHeader() }
-    }
-
     fun getLocalMyInfo(): Flowable<FriendDTO> {
         return Flowable.fromCallable { friendDao.getMyInfo(ME) }
     }
 
+    fun getLocalBirthDayList(): Flowable<List<FriendDTO>> {
+        return Flowable.fromCallable { friendDao.getIncludeHeader(BIRTHDAY_HEADER, BIRTHDAY_FRIEND) }
+    }
+
+    fun getLocalRecommendData(): Flowable<List<FriendDTO>> {
+        return Flowable.fromCallable { friendDao.getIncludeHeader(RECOMMEND_HEADER, RECOMMEND_FRIEND) }
+    }
+
     fun getLocalNormalFriend(): Flowable<List<FriendDTO>> {
-        return Flowable.fromCallable { friendDao.getNormalFriendList(FRIEND_FRIEND) }
+        return Flowable.fromCallable { friendDao.getIncludeHeader(FRIEND_HEADER, FRIEND_FRIEND) }
     }
 
     fun getLocalNormalFriendSearch(keyword: String): Flowable<List<FriendDTO>> {
-        return Flowable.fromCallable { friendDao.getNameLikeFriend(FRIEND_FRIEND, keyword) }
+        return Flowable.fromCallable { friendDao.getNameLikeFriend(FRIEND_HEADER, FRIEND_FRIEND, keyword) }
     }
 
     fun getLocalFriendByViewType(viewType: Int): Flowable<FriendDTO> {
-        return Flowable.fromCallable { friendDao.getFriendByViewType(viewType)}
+        return Flowable.fromCallable { friendDao.getFriendByViewType(viewType) }
     }
-
-
-
     //Network
-
 
 
     //Local + Network

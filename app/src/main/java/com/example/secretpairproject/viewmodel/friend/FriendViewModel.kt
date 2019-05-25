@@ -11,34 +11,26 @@ import io.reactivex.schedulers.Schedulers
 
 class FriendViewModel(application: Application) : BaseDisposableViewModel(application) {
 
-    private val _headerData = MutableLiveData<List<FriendDTO>>()
+    private val friendRepository = FriendRepository(application)
+
     private val _myData = MutableLiveData<FriendDTO>()
     private val _birthDayData = MutableLiveData<List<FriendDTO>>()
     private val _recommendData = MutableLiveData<List<FriendDTO>>()
+
+
     private val _normalFriendData = MutableLiveData<List<FriendDTO>>()
-
-
-    val headerData: LiveData<List<FriendDTO>> get() = _normalFriendData
     val myData: LiveData<FriendDTO> get() = _myData
     val birthDayData: LiveData<List<FriendDTO>> get() = _birthDayData
     val recommendData: LiveData<List<FriendDTO>> get() = _recommendData
     val normalFriendData: LiveData<List<FriendDTO>> get() = _normalFriendData
 
-
-    private val friendRepository by lazy {
-        FriendRepository(application)
+    init {
+        getMyInfo()
+        getBirthDayList()
+        getRecommendData()
+        getNormalFriendList()
     }
 
-    fun getHeader() {
-        addDisposable(
-            friendRepository.getHeader()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    _headerData.postValue(it)
-                })
-
-    }
 
     fun getMyInfo() {
         addDisposable(
@@ -52,17 +44,28 @@ class FriendViewModel(application: Application) : BaseDisposableViewModel(applic
 
     }
 
-    fun getLocalFriendByViewType(viewType: Int) {
+    fun getBirthDayList() {
         addDisposable(
-            friendRepository.getLocalFriendByViewType(viewType)
+            friendRepository.getLocalBirthDayList()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
+                    _birthDayData.postValue(it)
                 }
-
-
         )
     }
+
+    fun getRecommendData() {
+        addDisposable(
+            friendRepository.getLocalRecommendData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe {
+                    _recommendData.postValue(it)
+                }
+        )
+    }
+
 
     fun getNormalFriendList() {
         addDisposable(
@@ -75,25 +78,12 @@ class FriendViewModel(application: Application) : BaseDisposableViewModel(applic
         )
     }
 
-
-    fun getLocalNormalFriendSearch(keyword: String) {
-        addDisposable(
-            friendRepository.getLocalNormalFriendSearch(keyword)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                }
-        )
-    }
-
-
     fun insertFriend(friendDTO: FriendDTO) {
         addDisposable(friendRepository.insertFriend(friendDTO)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                getMyInfo()
-                getNormalFriendList()
+
             })
     }
 

@@ -20,25 +20,25 @@ interface FriendDAO {
     @Delete
     fun deleteFriend(vararg friends: FriendDTO)
 
-
-    @Query("SELECT * FROM friend WHERE viewType < 100 ORDER BY viewType")
-    fun getHeader(): List<FriendDTO>
-
     @Query("SELECT * FROM friend WHERE viewType=:me ORDER BY viewType")
     fun getMyInfo(me: Int): FriendDTO
 
     @Query("SELECT * FROM friend WHERE viewType=:normalFriend ORDER BY viewType")
     fun getNormalFriendList(normalFriend: Int): List<FriendDTO>
 
-    @Query("SELECT * FROM friend WHERE viewType=:normalFriend AND name LIKE '%' || :keyword || '%' ORDER BY viewType")
-    fun getNameLikeFriend(normalFriend: Int, keyword: String): List<FriendDTO>
 
     @Query("SELECT * FROM friend ORDER BY viewType")
     fun getAllInfo(): List<FriendDTO>
 
-
     @Query("SELECT* FROM friend WHERE viewType = :viewType  ORDER BY viewType")
     fun getFriendByViewType(viewType: Int): FriendDTO
+
+    @Query("SELECT* FROM friend WHERE viewType >= :begin AND viewType <= :end ORDER BY viewType")
+    fun getIncludeHeader(begin: Int, end: Int): List<FriendDTO>
+
+
+    @Query("SELECT * FROM friend WHERE viewType >= :begin AND viewType <= :end  AND name LIKE '%' || :keyword || '%' ORDER BY viewType")
+    fun getNameLikeFriend(begin: Int, end: Int, keyword: String): List<FriendDTO>
 
 
 }

@@ -35,35 +35,31 @@ object FriendFragment : Fragment() {
         view.friend_recycler_view.adapter = adapter
 
 
-        friendViewModel.headerData.observe(this, Observer {
-            adapter.loadHeader(it)
-        })
-
         friendViewModel.myData.observe(this, Observer {
-            adapter.updateMe(it)
+            adapter.updateMyInfo(it)
             adapter.notifyDataSetChanged()
 
         })
 
         friendViewModel.birthDayData.observe(this, Observer {
+            adapter.updateBirthDayList(it)
             adapter.notifyDataSetChanged()
 
         })
 
         friendViewModel.recommendData.observe(this, Observer {
+            adapter.updateRecommendList(it)
             adapter.notifyDataSetChanged()
         })
 
+
         friendViewModel.normalFriendData.observe(this, Observer {
-            adapter.updateNormalFriend(it)
+            adapter.updateFriendList(it)
             adapter.notifyDataSetChanged()
         })
 
         test()
 
-        friendViewModel.getHeader()
-        friendViewModel.getMyInfo()
-        friendViewModel.getNormalFriendList()
 
         return view
     }
