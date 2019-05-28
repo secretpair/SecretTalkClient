@@ -18,20 +18,21 @@ class FriendViewModel(application: Application) : BaseDisposableViewModel(applic
     private val _recommendData = MutableLiveData<List<FriendDTO>>()
     private val _normalFriendData = MutableLiveData<List<FriendDTO>>()
 
-    private val mutableMap: MutableMap<String, MutableLiveData<FriendDTO>> = HashMap()
-
     val myData: LiveData<FriendDTO> get() = _myData
     val birthDayData: LiveData<List<FriendDTO>> get() = _birthDayData
     val recommendData: LiveData<List<FriendDTO>> get() = _recommendData
     val normalFriendData: LiveData<List<FriendDTO>> get() = _normalFriendData
 
     init {
+
+    }
+
+    fun loadList(){
         getMyInfo()
         getBirthDayList()
         getRecommendData()
         getNormalFriendList()
     }
-
 
     fun getMyInfo() {
         addDisposable(

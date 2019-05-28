@@ -11,8 +11,10 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.secretpairproject.R
-import com.example.secretpairproject.config.*
+import com.example.secretpairproject.base.ItemAnimator
+import com.example.secretpairproject.config.FRIEND_FRIEND
 import com.example.secretpairproject.model.friend.FriendDTO
+import com.example.secretpairproject.view.main.adapter.FriendAdapter
 import com.example.secretpairproject.viewmodel.friend.FriendViewModel
 import kotlinx.android.synthetic.main.fragment_1friend.view.*
 
@@ -25,13 +27,14 @@ object FriendFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_1friend, container, false)
 
-        val adapter = FriendAdapter { email ->
-            Toast.makeText(context!!.applicationContext, "${email}님", Toast.LENGTH_SHORT).show()
-        }
-
+        val adapter =
+            FriendAdapter(context!!.applicationContext) { email ->
+                Toast.makeText(context!!.applicationContext, "${email}님", Toast.LENGTH_SHORT).show()
+            }
         view.friend_recycler_view.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         view.friend_recycler_view.adapter = adapter
 
+        view.friend_recycler_view.itemAnimator = ItemAnimator()
 
         friendViewModel.myData.observe(this, Observer {
             adapter.updateMyInfo(it)
@@ -41,7 +44,6 @@ object FriendFragment : Fragment() {
         friendViewModel.birthDayData.observe(this, Observer {
             adapter.updateBirthDayList(it)
             adapter.notifyDataSetChanged()
-
         })
 
         friendViewModel.recommendData.observe(this, Observer {
@@ -55,30 +57,15 @@ object FriendFragment : Fragment() {
             adapter.notifyDataSetChanged()
         })
 
+
+        friendViewModel.loadList()
         test()
-
-
         return view
     }
 
 
-    fun test() {
+    private fun test() {
 
-        friendViewModel.insertFriend(FriendDTO("alstn225@naver.com", "배민수", "silvercong", " ", " ", " ", ME))
-        friendViewModel.insertFriend(FriendDTO("$BIRTHDAY_HEADER", "오늘 생일인 친구", "", " ", " ", " ", BIRTHDAY_HEADER))
-        friendViewModel.insertFriend(FriendDTO("$RECOMMEND_HEADER", "추천친구", "", " ", " ", " ", RECOMMEND_HEADER))
-        friendViewModel.insertFriend(
-            FriendDTO(
-                "$RECOMMEND_FRIEND",
-                "새로운 친구를 만나보세요!",
-                "렛츠고",
-                " ",
-                " ",
-                " ",
-                RECOMMEND_FRIEND
-            )
-        )
-        friendViewModel.insertFriend(FriendDTO("$FRIEND_HEADER", "친구", "", " ", " ", " ", FRIEND_HEADER))
         friendViewModel.insertFriend(
             FriendDTO(
                 "alstn211@naver.com",
@@ -125,7 +112,6 @@ object FriendFragment : Fragment() {
                 FRIEND_FRIEND
             )
         )
-
     }
 
 }

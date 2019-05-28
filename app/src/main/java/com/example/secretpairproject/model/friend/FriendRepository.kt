@@ -2,14 +2,14 @@ package com.example.secretpairproject.model.friend
 
 import android.app.Application
 import com.example.secretpairproject.config.*
-import io.reactivex.Flowable
+import com.example.secretpairproject.config.room.RoomDatabaseConfig
 import io.reactivex.Maybe
 
 
 class FriendRepository(application: Application) {
 
     private val friendDao: FriendDAO by lazy {
-        val db = FriendRoomDatabase.getInstance(application)!!
+        val db = RoomDatabaseConfig.getInstance(application)!!
         db.friendDao()
     }
 
