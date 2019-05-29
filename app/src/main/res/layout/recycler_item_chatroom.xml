@@ -68,11 +68,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
         android:gravity="right"
-        android:paddingRight="15dp"
         android:text="5월 29일"
         android:textSize="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/chatroom_unread_count"
+        app:layout_constraintEnd_toEndOf="@+id/chatroom_unread_count"/>
 
 
     <TextView

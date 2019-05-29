@@ -1,0 +1,13 @@
+package com.example.secretpairproject.view.chat
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import com.example.secretpairproject.R
+
+class ChatRoomActivity : AppCompatActivity() {
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_chat_room)
+    }
+}
