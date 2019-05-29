@@ -3,6 +3,8 @@ package com.example.secretpairproject.model.chatroom
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
+import com.example.secretpairproject.config.room.DateTimeConverter
 import java.util.*
 
 
@@ -14,7 +16,8 @@ data class ChatRoomDTO(
     val lastDate: Date,
     val profile: String,
     val customName: String,
-    val unReadCount: Int
+    val unReadCount: Int,
+    val userCount:Int
 ) {
 
 }

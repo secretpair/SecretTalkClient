@@ -1,8 +1,107 @@
-package com.example.secretpairproject
-
-import android.content.Context
-
-
-class TestDO(val context: Context) {
-
-}
+//java.lang.IllegalStateException: Backend Internal error: Exception during code generation
+//Cause: Back-end (JVM) Internal error: Invalid Android class type: UNKNOWN
+//Cause: Invalid Android class type: UNKNOWN
+//File being compiled at position: (28,116) in /Users/baeminsu/AndroidStudioProjects/SecretPairProject/app/src/main/java/com/example/secretpairproject/view/main/fragment/ChatRoomFragment.kt
+//The root cause was thrown at: ResourcePropertyStackValue.kt:77
+//File being compiled at position: file:///Users/baeminsu/AndroidStudioProjects/SecretPairProject/app/src/main/java/com/example/secretpairproject/view/main/fragment/ChatRoomFragment.kt
+//The root cause was thrown at: ExpressionCodegen.java:322
+//at org.jetbrains.kotlin.codegen.CompilationErrorHandler.lambda$static$0(CompilationErrorHandler.java:24)
+//at org.jetbrains.kotlin.codegen.PackageCodegenImpl.generate(PackageCodegenImpl.java:75)
+//at org.jetbrains.kotlin.codegen.DefaultCodegenFactory.generatePackage(CodegenFactory.kt:99)
+//at org.jetbrains.kotlin.codegen.DefaultCodegenFactory.generateModule(CodegenFactory.kt:70)
+//at org.jetbrains.kotlin.codegen.KotlinCodegenFacade.doGenerateFiles(KotlinCodegenFacade.java:47)
+//at org.jetbrains.kotlin.codegen.KotlinCodegenFacade.compileCorrectFiles(KotlinCodegenFacade.java:39)
+//at org.jetbrains.kotlin.cli.jvm.compiler.KotlinToJVMBytecodeCompiler.generate(KotlinToJVMBytecodeCompiler.kt:455)
+//at org.jetbrains.kotlin.cli.jvm.compiler.KotlinToJVMBytecodeCompiler.compileModules$cli(KotlinToJVMBytecodeCompiler.kt:154)
+//at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.doExecute(K2JVMCompiler.kt:131)
+//at org.jetbrains.kotlin.cli.jvm.K2JVMCompiler.doExecute(K2JVMCompiler.kt:54)
+//at org.jetbrains.kotlin.cli.common.CLICompiler.execImpl(CLICompiler.kt:84)
+//at org.jetbrains.kotlin.cli.common.CLICompiler.execImpl(CLICompiler.kt:42)
+//at org.jetbrains.kotlin.cli.common.CLITool.exec(CLITool.kt:103)
+//at org.jetbrains.kotlin.incremental.IncrementalJvmCompilerRunner.runCompiler(IncrementalJvmCompilerRunner.kt:364)
+//at org.jetbrains.kotlin.incremental.IncrementalJvmCompilerRunner.runCompiler(IncrementalJvmCompilerRunner.kt:105)
+//at org.jetbrains.kotlin.incremental.IncrementalCompilerRunner.compileIncrementally(IncrementalCompilerRunner.kt:237)
+//at org.jetbrains.kotlin.incremental.IncrementalCompilerRunner.access$compileIncrementally(IncrementalCompilerRunner.kt:37)
+//at org.jetbrains.kotlin.incremental.IncrementalCompilerRunner$compile$2.invoke(IncrementalCompilerRunner.kt:79)
+//at org.jetbrains.kotlin.incremental.IncrementalCompilerRunner.compile(IncrementalCompilerRunner.kt:91)
+//at org.jetbrains.kotlin.daemon.CompileServiceImpl.execIncrementalCompiler(CompileServiceImpl.kt:597)
+//at org.jetbrains.kotlin.daemon.CompileServiceImpl.access$execIncrementalCompiler(CompileServiceImpl.kt:102)
+//at org.jetbrains.kotlin.daemon.CompileServiceImpl$compile$$inlined$ifAlive$lambda$2.invoke(CompileServiceImpl.kt:455)
+//at org.jetbrains.kotlin.daemon.CompileServiceImpl$compile$$inlined$ifAlive$lambda$2.invoke(CompileServiceImpl.kt:102)
+//at org.jetbrains.kotlin.daemon.CompileServiceImpl$doCompile$$inlined$ifAlive$lambda$2.invoke(CompileServiceImpl.kt:1023)
+//at org.jetbrains.kotlin.daemon.CompileServiceImpl$doCompile$$inlined$ifAlive$lambda$2.invoke(CompileServiceImpl.kt:102)
+//at org.jetbrains.kotlin.daemon.common.DummyProfiler.withMeasure(PerfUtils.kt:137)
+//at org.jetbrains.kotlin.daemon.CompileServiceImpl.checkedCompile(CompileServiceImpl.kt:1065)
+//at org.jetbrains.kotlin.daemon.CompileServiceImpl.doCompile(CompileServiceImpl.kt:1022)
+//at org.jetbrains.kotlin.daemon.CompileServiceImpl.compile(CompileServiceImpl.kt:454)
+//at sun.reflect.GeneratedMethodAccessor105.invoke(Unknown Source)
+//at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+//at java.lang.reflect.Method.invoke(Method.java:498)
+//at sun.rmi.server.UnicastServerRef.dispatch(UnicastServerRef.java:346)
+//at sun.rmi.transport.Transport$1.run(Transport.java:200)
+//at sun.rmi.transport.Transport$1.run(Transport.java:197)
+//at java.security.AccessController.doPrivileged(Native Method)
+//at sun.rmi.transport.Transport.serviceCall(Transport.java:196)
+//at sun.rmi.transport.tcp.TCPTransport.handleMessages(TCPTransport.java:568)
+//at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(TCPTransport.java:826)
+//at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.lambda$run$0(TCPTransport.java:683)
+//at java.security.AccessController.doPrivileged(Native Method)
+//at sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(TCPTransport.java:682)
+//at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+//at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+//at java.lang.Thread.run(Thread.java:745)
+//Caused by: org.jetbrains.kotlin.codegen.CompilationException: Back-end (JVM) Internal error: Invalid Android class type: UNKNOWN
+//Cause: Invalid Android class type: UNKNOWN
+//File being compiled at position: (28,116) in /Users/baeminsu/AndroidStudioProjects/SecretPairProject/app/src/main/java/com/example/secretpairproject/view/main/fragment/ChatRoomFragment.kt
+//The root cause was thrown at: ResourcePropertyStackValue.kt:77
+//at org.jetbrains.kotlin.codegen.ExpressionCodegen.genQualified(ExpressionCodegen.java:322)
+//at org.jetbrains.kotlin.codegen.ExpressionCodegen.genStatement(ExpressionCodegen.java:401)
+//at org.jetbrains.kotlin.codegen.ExpressionCodegen.gen(ExpressionCodegen.java:362)
+//at org.jetbrains.kotlin.codegen.ExpressionCodegen.returnExpression(ExpressionCodegen.java:1687)
+//at org.jetbrains.kotlin.codegen.FunctionGenerationStrategy$FunctionDefault.doGenerateBody(FunctionGenerationStrategy.java:64)
+//at org.jetbrains.kotlin.codegen.FunctionGenerationStrategy$CodegenBased.generateBody(FunctionGenerationStrategy.java:84)
+//at org.jetbrains.kotlin.codegen.FunctionCodegen.generateMethodBody(FunctionCodegen.java:666)
+//at org.jetbrains.kotlin.codegen.FunctionCodegen.generateMethodBody(FunctionCodegen.java:473)
+//at org.jetbrains.kotlin.codegen.FunctionCodegen.generateMethod(FunctionCodegen.java:259)
+//at org.jetbrains.kotlin.codegen.FunctionCodegen.generateMethod(FunctionCodegen.java:175)
+//at org.jetbrains.kotlin.codegen.FunctionCodegen.gen(FunctionCodegen.java:146)
+//at org.jetbrains.kotlin.codegen.MemberCodegen.genSimpleMember(MemberCodegen.java:197)
+//at org.jetbrains.kotlin.codegen.ClassBodyCodegen.generateDeclaration(ClassBodyCodegen.java:166)
+//at org.jetbrains.kotlin.codegen.ClassBodyCodegen.generateBody(ClassBodyCodegen.java:86)
+//at org.jetbrains.kotlin.codegen.MemberCodegen.generate(MemberCodegen.java:129)
+//at org.jetbrains.kotlin.codegen.MemberCodegen.genClassOrObject(MemberCodegen.java:302)
+//at org.jetbrains.kotlin.codegen.MemberCodegen.genClassOrObject(MemberCodegen.java:286)
+//at org.jetbrains.kotlin.codegen.PackageCodegenImpl.generateClassOrObject(PackageCodegenImpl.java:171)
+//at org.jetbrains.kotlin.codegen.PackageCodegenImpl.generateClassesAndObjectsInFile(PackageCodegenImpl.java:87)
+//at org.jetbrains.kotlin.codegen.PackageCodegenImpl.generateFile(PackageCodegenImpl.java:130)
+//at org.jetbrains.kotlin.codegen.PackageCodegenImpl.generate(PackageCodegenImpl.java:67)
+//... 43 more
+//Caused by: java.lang.IllegalStateException: Invalid Android class type: UNKNOWN
+//at org.jetbrains.kotlin.android.synthetic.codegen.ResourcePropertyStackValue.putSelector(ResourcePropertyStackValue.kt:77)
+//at org.jetbrains.kotlin.codegen.StackValue.put(StackValue.java:118)
+//at org.jetbrains.kotlin.codegen.StackValue.put(StackValue.java:107)
+//at org.jetbrains.kotlin.codegen.AsmUtil$1.putSelector(AsmUtil.java:1002)
+//at org.jetbrains.kotlin.codegen.StackValue.put(StackValue.java:118)
+//at org.jetbrains.kotlin.codegen.StackValue.put(StackValue.java:107)
+//at org.jetbrains.kotlin.codegen.StackValue.moveToTopOfStack(StackValue.java:103)
+//at org.jetbrains.kotlin.codegen.CallReceiver.putSelector(CallReceiver.java:171)
+//at org.jetbrains.kotlin.codegen.StackValue.put(StackValue.java:118)
+//at org.jetbrains.kotlin.codegen.StackValue.put(StackValue.java:107)
+//at org.jetbrains.kotlin.codegen.StackValue$StackValueWithSimpleReceiver.putReceiver(StackValue.java:2085)
+//at org.jetbrains.kotlin.codegen.StackValue$StackValueWithSimpleReceiver.store(StackValue.java:2143)
+//at org.jetbrains.kotlin.codegen.StackValue$Property.store(StackValue.java:1776)
+//at org.jetbrains.kotlin.codegen.StackValue.store(StackValue.java:139)
+//at org.jetbrains.kotlin.codegen.ExpressionCodegen.lambda$generateAssignmentExpression$23(ExpressionCodegen.java:3869)
+//at org.jetbrains.kotlin.codegen.OperationStackValue.putSelector(StackValue.kt:79)
+//at org.jetbrains.kotlin.codegen.StackValue.put(StackValue.java:118)
+//at org.jetbrains.kotlin.codegen.StackValue.put(StackValue.java:107)
+//at org.jetbrains.kotlin.codegen.ExpressionCodegen.generateBlock(ExpressionCodegen.java:1258)
+//at org.jetbrains.kotlin.codegen.ExpressionCodegen.generateBlock(ExpressionCodegen.java:1197)
+//at org.jetbrains.kotlin.codegen.CodegenStatementVisitor.visitBlockExpression(CodegenStatementVisitor.java:56)
+//at org.jetbrains.kotlin.codegen.CodegenStatementVisitor.visitBlockExpression(CodegenStatementVisitor.java:22)
+//at org.jetbrains.kotlin.psi.KtBlockExpression.accept(KtBlockExpression.java:44)
+//at org.jetbrains.kotlin.codegen.ExpressionCodegen.genQualified(ExpressionCodegen.java:299)
+//... 63 more
+//
+//
+//> Task :app:buildInfoGeneratorDebug

@@ -43,6 +43,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:text="상태메시지입니다."
+        android:layout_marginTop="2dp"
         android:textColor="#9d9d9d"
         android:textSize="13dp"
         app:layout_constraintBottom_toBottomOf="parent"

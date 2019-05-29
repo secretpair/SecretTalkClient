@@ -24,8 +24,12 @@ interface ChatRoomDAO {
     @Delete
     fun deleteFriend(vararg charRooms: ChatRoomDTO)
 
+    @Query("SELECT * FROM chatRoom  ORDER BY lastDate")
+    fun getAllChatRoom(): LiveData<List<ChatRoomDTO>>
+
+
     @Query("SELECT * FROM chatRoom WHERE name LIKE '%' || :keyword || '%' ORDER BY lastDate")
-    fun getChatRoomKeywordSearch(keyword: String): List<ChatRoomDTO>
+    fun getChatRoomKeywordSearch(keyword: String): LiveData<List<ChatRoomDTO>>
 
 
 }

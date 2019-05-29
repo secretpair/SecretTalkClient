@@ -78,7 +78,7 @@ class MainActivity : BaseActivity() {
                     return@setOnNavigationItemSelectedListener true;
                 }
                 R.id.nav2 -> {
-                    main_view_pager.currentItem = 0
+                    main_view_pager.currentItem = 1
                     mainViewModel.categoryTitle.value = "채팅"
                     mainViewModel.topIconState.value = 1
                     return@setOnNavigationItemSelectedListener true;

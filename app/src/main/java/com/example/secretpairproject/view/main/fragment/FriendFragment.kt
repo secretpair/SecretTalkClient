@@ -15,7 +15,7 @@ import com.example.secretpairproject.base.ItemAnimator
 import com.example.secretpairproject.config.FRIEND_FRIEND
 import com.example.secretpairproject.model.friend.FriendDTO
 import com.example.secretpairproject.view.main.adapter.FriendAdapter
-import com.example.secretpairproject.viewmodel.friend.FriendViewModel
+import com.example.secretpairproject.viewmodel.main.FriendViewModel
 import kotlinx.android.synthetic.main.fragment_1friend.view.*
 
 

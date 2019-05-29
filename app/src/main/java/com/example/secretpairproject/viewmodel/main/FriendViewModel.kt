@@ -1,4 +1,4 @@
-package com.example.secretpairproject.viewmodel.friend
+package com.example.secretpairproject.viewmodel.main
 
 import android.app.Application
 import androidx.lifecycle.LiveData
@@ -23,9 +23,7 @@ class FriendViewModel(application: Application) : BaseDisposableViewModel(applic
     val recommendData: LiveData<List<FriendDTO>> get() = _recommendData
     val normalFriendData: LiveData<List<FriendDTO>> get() = _normalFriendData
 
-    init {
 
-    }
 
     fun loadList(){
         getMyInfo()

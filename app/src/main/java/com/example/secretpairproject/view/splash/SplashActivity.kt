@@ -3,8 +3,6 @@ package com.example.secretpairproject.view.splash
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import com.example.secretpairproject.R
 import com.example.secretpairproject.config.BIRTHDAY_HEADER
@@ -14,14 +12,10 @@ import com.example.secretpairproject.config.RECOMMEND_HEADER
 import com.example.secretpairproject.model.friend.FriendDTO
 import com.example.secretpairproject.util.SharePreferenceManager
 import com.example.secretpairproject.view.main.MainActivity
-import com.example.secretpairproject.viewmodel.friend.FriendViewModel
-import io.reactivex.Observable
-import io.reactivex.Scheduler
+import com.example.secretpairproject.viewmodel.main.FriendViewModel
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.rxkotlin.addTo
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
