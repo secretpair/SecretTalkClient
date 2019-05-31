@@ -23,45 +23,7 @@ class MainActivity : BaseActivity() {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_main)
 
-
-        mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
-        mainViewModel.categoryTitle.value = "친구"
-        mainViewModel.topIconState.value = 0
-        mainViewModel.categoryTitle.observe(this, Observer {
-            main_category_title.text = it.toString()
-        })
-        mainViewModel.topIconState.observe(this, Observer { state ->
-            when (state) {
-
-                0 -> {
-                    main_search_btn.visibility = View.VISIBLE
-                    main_friend_add_btn.visibility = View.VISIBLE
-                    main_chat_add_btn.visibility = View.INVISIBLE
-                }
-                1 -> {
-                    main_search_btn.visibility = View.VISIBLE
-                    main_friend_add_btn.visibility = View.INVISIBLE
-                    main_chat_add_btn.visibility = View.VISIBLE
-                }
-                2 -> {
-                    main_search_btn.visibility = View.INVISIBLE
-                    main_friend_add_btn.visibility = View.INVISIBLE
-                    main_chat_add_btn.visibility = View.INVISIBLE
-                }
-                3 -> {
-                    main_search_btn.visibility = View.INVISIBLE
-                    main_friend_add_btn.visibility = View.INVISIBLE
-                    main_chat_add_btn.visibility = View.INVISIBLE
-                }
-
-            }
-        })
-
-        setBarTransparency()
-        initFragmentPager()
-        initBottomNavigation()
-        main_view_pager.setCurrentItem(0, true)
-
+        initWidget()
 
     }
 
@@ -108,6 +70,46 @@ class MainActivity : BaseActivity() {
         }
 
 
+    }
+
+     fun initWidget() {
+        mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
+        mainViewModel.categoryTitle.value = "친구"
+        mainViewModel.topIconState.value = 0
+        mainViewModel.categoryTitle.observe(this, Observer {
+            main_category_title.text = it.toString()
+        })
+        mainViewModel.topIconState.observe(this, Observer { state ->
+            when (state) {
+
+                0 -> {
+                    main_search_btn.visibility = View.VISIBLE
+                    main_friend_add_btn.visibility = View.VISIBLE
+                    main_chat_add_btn.visibility = View.INVISIBLE
+                }
+                1 -> {
+                    main_search_btn.visibility = View.VISIBLE
+                    main_friend_add_btn.visibility = View.INVISIBLE
+                    main_chat_add_btn.visibility = View.VISIBLE
+                }
+                2 -> {
+                    main_search_btn.visibility = View.INVISIBLE
+                    main_friend_add_btn.visibility = View.INVISIBLE
+                    main_chat_add_btn.visibility = View.INVISIBLE
+                }
+                3 -> {
+                    main_search_btn.visibility = View.INVISIBLE
+                    main_friend_add_btn.visibility = View.INVISIBLE
+                    main_chat_add_btn.visibility = View.INVISIBLE
+                }
+
+            }
+        })
+
+        setBarTransparency()
+        initFragmentPager()
+        initBottomNavigation()
+        main_view_pager.setCurrentItem(0, true)
     }
 
     private fun initFragmentPager() {
