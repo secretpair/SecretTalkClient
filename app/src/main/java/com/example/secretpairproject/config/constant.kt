@@ -13,3 +13,12 @@ const val FRIEND_FRIEND = 450
 
 const val HEADER_MODULATION_CHECK_VALUE = 100
 
+const val TEXT = 900
+const val IMAGE = 901
+
+const val SEND_TEXT_MESSAGE = 923
+const val RECEIVE_TEXT_MESSAGE = 924
+
+const val SEND_IMAGE_MESSAGE = 943
+const val RECEIVE_IMAGE_MESSAGE = 945
+

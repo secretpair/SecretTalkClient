@@ -4,19 +4,26 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.view.WindowManager
-import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.ViewModelProviders
 import com.example.secretpairproject.R
 import com.example.secretpairproject.base.BaseActivity
-import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
+import com.example.secretpairproject.config.RECEIVE_TEXT_MESSAGE
+import com.example.secretpairproject.config.SEND_TEXT_MESSAGE
+import com.example.secretpairproject.config.TEXT
+import com.example.secretpairproject.model.chat.ChatDTO
+import com.example.secretpairproject.viewmodel.main.ChatViewModel
 import kotlinx.android.synthetic.main.activity_chat_room.*
+import java.util.*
 
 class ChatRoomActivity : BaseActivity() {
 
+
+    val chatViewModel: ChatViewModel by lazy {
+        ViewModelProviders.of(this).get(ChatViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +31,7 @@ class ChatRoomActivity : BaseActivity() {
         setBarTransparency()
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         initWidget()
+        test()
 
     }
 
@@ -85,5 +93,47 @@ class ChatRoomActivity : BaseActivity() {
     override fun onDestroy() {
         chat_room_root_layout.viewTreeObserver.addOnGlobalLayoutListener(null)
         super.onDestroy()
+    }
+
+    private fun test() {
+        val idd = 'a';
+        chatViewModel.insertChat(
+            "1",
+            ChatDTO("asdsd+${idd + 1}", "1", "alstn225@naver.com", TEXT, Date(), "", 1, true, "안녕하소")
+        )
+        chatViewModel.insertChat(
+            "1",
+            ChatDTO("asdsd+${idd + 2}", "1", "alstn224@naver.com", TEXT, Date(), "", 0, true, "그렇소!")
+        )
+        chatViewModel.insertChat(
+            "1",
+            ChatDTO("asdsd+${idd + 3}", "1", "alstn225@naver.com", TEXT, Date(), "", 1, true, "애플 워치4 삼삼")
+        )
+        chatViewModel.insertChat(
+            "1",
+            ChatDTO("asdsd+${idd + 4}", "1", "alstn224@naver.com", TEXT, Date(), "", 0, true, "제시")
+        )
+        chatViewModel.insertChat(
+            "1",
+            ChatDTO(
+                "asdsd+${idd + 5}",
+                "1",
+                "alstn225@naver.com",
+                TEXT,
+                Date(),
+                "",
+                1,
+                true,
+                "붕어빵3개랑 펩시콜라 1.25L로 가능?"
+            )
+        )
+        chatViewModel.insertChat(
+            "1",
+            ChatDTO("asdsd+${idd + 6}", "1", "alstn225@naver.com", TEXT, Date(), "", 1, true, "???")
+        )
+        chatViewModel.insertChat(
+            "1",
+            ChatDTO("asdsd+${idd + 7}", "1", "alstn224@naver.com", TEXT, Date(), "", 0, true, "안됨")
+        )
     }
 }

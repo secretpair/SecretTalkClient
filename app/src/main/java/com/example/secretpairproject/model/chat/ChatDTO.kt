@@ -22,8 +22,8 @@ data class ChatDTO(
     val sendDate: Date,
     val profile: String,
     val unReadCount: Int,
-    val userCount: Int,
-    var isRead: Boolean
+    var isRead: Boolean,
+    val content: String
 ) {
 
 }

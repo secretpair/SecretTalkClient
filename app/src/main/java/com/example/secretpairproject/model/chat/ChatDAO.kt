@@ -9,10 +9,10 @@ interface ChatDAO {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertFriend(vararg chats: ChatDTO)
+    fun insertChat(vararg chats: ChatDTO)
 
     @Update
-    fun updateAllFriend(vararg chats: ChatDTO)
+    fun updateChat(vararg chats: ChatDTO)
 
 
     @Query(" SELECT * FROM chat WHERE roomId=:roomId LIMIT :page*50 ")

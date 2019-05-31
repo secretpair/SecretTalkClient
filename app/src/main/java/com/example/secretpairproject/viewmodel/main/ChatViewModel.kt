@@ -5,6 +5,8 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.secretpairproject.base.BaseDisposableViewModel
+import com.example.secretpairproject.model.chat.ChatDTO
+import com.example.secretpairproject.model.chat.ChatRepository
 import com.example.secretpairproject.model.chatroom.ChatRoomDTO
 import com.example.secretpairproject.model.chatroom.ChatRoomRepository
 import com.example.secretpairproject.model.friend.FriendDTO
@@ -13,14 +15,14 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 
-class ChatViewModel(application: Application) : BaseDisposableViewModel(application) {
+class ChatViewModel(application: Application, roomId: String) : BaseDisposableViewModel(application) {
 
-    private val chatRoomRepository = ChatRoomRepository(application)
-    private val chatRoomData: LiveData<List<ChatRoomDTO>> by lazy {
-        chatRoomRepository.getLocalChatRoomList()
+    private val chatRepository = ChatRepository(application)
+    private val chatData: LiveData<List<ChatDTO>> by lazy {
+        chatRepository.getLocalChatRoomList(roomId, 1)
     }
 
-    fun getChatRoomList() = chatRoomData
+    fun getChatList() = chatData
 
 
     init {
@@ -28,17 +30,16 @@ class ChatViewModel(application: Application) : BaseDisposableViewModel(applicat
     }
 
     fun loadList() {
-        getChatRoomList()
+        getChatList()
     }
 
 
-    fun insertChatRoom(data: ChatRoomDTO) {
+    fun insertChat(roomId: String, data: ChatDTO) {
         addDisposable(
-            chatRoomRepository.insertLocalChatRoomList(data)
+            chatRepository.insertChat(roomId, data)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                })
+                .subscribe { })
     }
 
 

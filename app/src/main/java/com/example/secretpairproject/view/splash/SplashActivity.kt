@@ -32,7 +32,7 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        SharePreferenceManager.put(this, "email", "kluge0221@gmail.com")
+        SharePreferenceManager.put(this, "email", "alstn225@naver.com")
         val source = Single.just<String>(SharePreferenceManager.getString(this, "email"))
             .delay(1000, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())

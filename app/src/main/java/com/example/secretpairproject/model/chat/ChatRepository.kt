@@ -15,6 +15,12 @@ class ChatRepository(application: Application) {
         db.chatDao()
     }
 
+
+    fun insertChat(roomId: String, chat: ChatDTO): Maybe<Unit> {
+        return Maybe.fromCallable { chatDAO.insertChat(chat) }
+
+    }
+
     //Only Local
     fun getLocalChatRoomList(roomId: String, page: Int): LiveData<List<ChatDTO>> {
         return chatDAO.getChatByRoomId(roomId, page)
