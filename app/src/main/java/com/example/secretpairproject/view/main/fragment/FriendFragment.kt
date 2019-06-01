@@ -59,7 +59,7 @@ object FriendFragment : Fragment() {
 
 
         friendViewModel.loadList()
-        test()
+//        test()
         return view
     }
 

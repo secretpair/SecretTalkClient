@@ -1,12 +1,14 @@
 package com.example.secretpairproject.view.main.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.secretpairproject.R
 import com.example.secretpairproject.model.chatroom.ChatRoomDTO
+import com.example.secretpairproject.view.chat.ChatRoomActivity
 import kotlinx.android.synthetic.main.recycler_item_chatroom.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -42,6 +44,14 @@ class ChatRoomAdapter(private val list: MutableList<ChatRoomDTO>, context: Conte
 
 
         override fun setView(data: ChatRoomDTO) {
+
+            itemView.setOnClickListener {
+
+                Intent(itemView.context, ChatRoomActivity::class.java).let {
+                    it.putExtra("roomId", data.id)
+                    itemView.context.startActivity(it)
+                }
+            }
 
 
             if (data.customName.isNotEmpty()) {

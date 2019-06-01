@@ -17,13 +17,19 @@ import java.util.*
 data class ChatDTO(
     @PrimaryKey val id: String,
     val roomId: String,
-    val sender: String,
+    val senderEamil: String,
+    val senderName : String,
     val type: Int,
     val sendDate: Date,
     val profile: String,
     val unReadCount: Int,
     var isRead: Boolean,
     val content: String
-) {
+) : Comparable<ChatDTO> {
+    override fun compareTo(other: ChatDTO): Int {
+
+        if (sendDate > other.sendDate) return 1
+        else return -1
+    }
 
 }

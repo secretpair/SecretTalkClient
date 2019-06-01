@@ -1,6 +1,7 @@
 package com.example.secretpairproject.view.chat.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,16 +27,13 @@ class ChatAdapter(private val list: MutableList<ChatDTO>, context: Context) :
     override fun getItemViewType(position: Int): Int {
         val chatData = list[position]
         when (chatData.type) {
-
             TEXT -> {
-                if (myEmail == chatData.sender) {
+                if (myEmail == chatData.senderEamil) {
                     return SEND_TEXT_MESSAGE
-                } else if (myEmail != chatData.sender) {
+                } else if (myEmail != chatData.senderEamil) {
                     return RECEIVE_TEXT_MESSAGE
                 }
             }
-
-
         }
 
 
@@ -48,7 +46,8 @@ class ChatAdapter(private val list: MutableList<ChatDTO>, context: Context) :
             view = LayoutInflater.from(parent.context).inflate(R.layout.recycler_item_chat_send_message, parent, false)
             return SendTextMessageViewHolder(view)
         } else if (viewType == RECEIVE_TEXT_MESSAGE) {
-            view = LayoutInflater.from(parent.context).inflate(R.layout.recycler_item_chat_send_message, parent, false)
+            view =
+                LayoutInflater.from(parent.context).inflate(R.layout.recycler_item_chat_receive_message, parent, false)
             return ReceiveTextMessageViewHolder(view)
         }
         return ReceiveTextMessageViewHolder(
@@ -63,20 +62,36 @@ class ChatAdapter(private val list: MutableList<ChatDTO>, context: Context) :
     }
 
     override fun getItemCount(): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return list.size
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
+
+        holder.setView(list[position])
+
     }
 
+
+    fun addChat(chat: ChatDTO) {
+        list.add(chat)
+        list.sort()
+    }
+
+    fun addAllChat(vararg lists: ChatDTO) {
+        list.addAll(lists)
+        list.sort()
+    }
 
     abstract inner class BaseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         abstract fun setView(data: ChatDTO)
     }
 
     inner class SendTextMessageViewHolder(view: View) : BaseViewHolder(view) {
+
         override fun setView(data: ChatDTO) {
+
+
             itemView.text_send_message_body.text = data.content
             itemView.text_send_message_time.text = timeFormat.format(data.sendDate)
 
@@ -93,9 +108,16 @@ class ChatAdapter(private val list: MutableList<ChatDTO>, context: Context) :
     inner class ReceiveTextMessageViewHolder(view: View) : BaseViewHolder(view) {
 
         override fun setView(data: ChatDTO) {
+
+
+            if (adapterPosition != 0 && (list[adapterPosition - 1].senderEamil == data.senderEamil)) {
+                itemView.text_receive_message_profile.visibility = View.GONE
+                itemView.text_receive_message_name.visibility = View.GONE
+            }
+
             itemView.text_receive_message_body.text = data.content
             itemView.text_receive_message_time.text = timeFormat.format(data.sendDate)
-            itemView.text_receive_message_name.text = data.sender
+            itemView.text_receive_message_name.text = data.senderName
 
             if (data.unReadCount == 0) {
                 itemView.text_receive_message_unread_count.visibility = View.INVISIBLE
