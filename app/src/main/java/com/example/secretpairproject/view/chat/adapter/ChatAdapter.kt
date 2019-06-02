@@ -1,19 +1,18 @@
 package com.example.secretpairproject.view.chat.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.secretpairproject.config.TEXT
 import androidx.recyclerview.widget.RecyclerView
 import com.example.secretpairproject.R
-import com.example.secretpairproject.config.RECEIVE_TEXT_MESSAGE
-import com.example.secretpairproject.config.SEND_TEXT_MESSAGE
+import com.example.secretpairproject.config.*
 import com.example.secretpairproject.model.chat.ChatDTO
 import com.example.secretpairproject.util.SharePreferenceManager
-import kotlinx.android.synthetic.main.recycler_item_chat_receive_message.view.*
-import kotlinx.android.synthetic.main.recycler_item_chat_send_message.view.*
+import kotlinx.android.synthetic.main.recycler_item_chat_receive_head_message.view.*
+import kotlinx.android.synthetic.main.recycler_item_chat_receive_middle_message.view.*
+import kotlinx.android.synthetic.main.recycler_item_chat_send_head_message.view.*
+import kotlinx.android.synthetic.main.recycler_item_chat_send_middle_message.view.*
 import java.text.SimpleDateFormat
 
 class ChatAdapter(private val list: MutableList<ChatDTO>, context: Context) :
@@ -28,10 +27,14 @@ class ChatAdapter(private val list: MutableList<ChatDTO>, context: Context) :
         val chatData = list[position]
         when (chatData.type) {
             TEXT -> {
-                if (myEmail == chatData.senderEamil) {
-                    return SEND_TEXT_MESSAGE
-                } else if (myEmail != chatData.senderEamil) {
-                    return RECEIVE_TEXT_MESSAGE
+                if ((position != 0 && list[position - 1].senderEamil != list[position].senderEamil && myEmail == chatData.senderEamil) || position == 0) {
+                    return SEND_HEAD_TEXT_MESSAGE
+                } else if ((position != 0 && list[position - 1].senderEamil != list[position].senderEamil && myEmail != chatData.senderEamil) || position == 0) {
+                    return RECEIVE_HEAD_TEXT_MESSAGE
+                } else if ((position != 0 && list[position - 1].senderEamil == list[position].senderEamil && myEmail == chatData.senderEamil)) {
+                    return SEND_MIDDLE_TEXT_MESSAGE
+                } else if ((position != 0 && list[position - 1].senderEamil == list[position].senderEamil && myEmail != chatData.senderEamil)) {
+                    return RECEIVE_MIDDLE_TEXT_MESSAGE
                 }
             }
         }
@@ -42,21 +45,37 @@ class ChatAdapter(private val list: MutableList<ChatDTO>, context: Context) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         val view: View
-        if (viewType == SEND_TEXT_MESSAGE) {
-            view = LayoutInflater.from(parent.context).inflate(R.layout.recycler_item_chat_send_message, parent, false)
-            return SendTextMessageViewHolder(view)
-        } else if (viewType == RECEIVE_TEXT_MESSAGE) {
-            view =
-                LayoutInflater.from(parent.context).inflate(R.layout.recycler_item_chat_receive_message, parent, false)
-            return ReceiveTextMessageViewHolder(view)
-        }
-        return ReceiveTextMessageViewHolder(
-            LayoutInflater.from(parent.context).inflate(
-                R.layout.recycler_item_chat_send_message,
-                parent,
-                false
+        when (viewType) {
+            SEND_HEAD_TEXT_MESSAGE -> {
+                view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.recycler_item_chat_send_head_message, parent, false)
+                return SendTextHeaderMessageViewHolder(view)
+            }
+            SEND_MIDDLE_TEXT_MESSAGE -> {
+                view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.recycler_item_chat_send_middle_message, parent, false)
+                return SendTextMiddleMessageViewHolder(view)
+            }
+            RECEIVE_HEAD_TEXT_MESSAGE -> {
+                view =
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.recycler_item_chat_receive_head_message, parent, false)
+                return ReceiveTextHeaderMessageViewHolder(view)
+            }
+            RECEIVE_MIDDLE_TEXT_MESSAGE -> {
+                view =
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.recycler_item_chat_receive_middle_message, parent, false)
+                return ReceiveTextMiddleMessageViewHolder(view)
+            }
+            else -> return ReceiveTextHeaderMessageViewHolder(
+                LayoutInflater.from(parent.context).inflate(
+                    R.layout.recycler_item_chat_send_head_message,
+                    parent,
+                    false
+                )
             )
-        )
+        }
 
 
     }
@@ -87,45 +106,99 @@ class ChatAdapter(private val list: MutableList<ChatDTO>, context: Context) :
         abstract fun setView(data: ChatDTO)
     }
 
-    inner class SendTextMessageViewHolder(view: View) : BaseViewHolder(view) {
+    inner class SendTextHeaderMessageViewHolder(view: View) : BaseViewHolder(view) {
 
         override fun setView(data: ChatDTO) {
-
-
-            itemView.text_send_message_body.text = data.content
-            itemView.text_send_message_time.text = timeFormat.format(data.sendDate)
+            itemView.text_send_head_message_body.text = data.content
+            itemView.text_send_head_message_time.text = timeFormat.format(data.sendDate)
 
             if (data.unReadCount == 0) {
-                itemView.text_send_message_unread_count.visibility = View.INVISIBLE
+                itemView.text_send_head_message_unread_count.visibility = View.INVISIBLE
             } else {
-                itemView.text_send_message_unread_count.visibility = View.VISIBLE
-                itemView.text_send_message_unread_count.text = "${data.unReadCount}"
+                itemView.text_send_head_message_unread_count.visibility = View.VISIBLE
+                itemView.text_send_head_message_unread_count.text = "${data.unReadCount}"
+            }
+
+            if (list.size - 1 != adapterPosition && list[adapterPosition].sendDate.isEqualDayAndTime(list[adapterPosition + 1].sendDate)) {
+                itemView.text_send_head_message_time.visibility = View.GONE
+            } else {
+                itemView.text_send_head_message_time.visibility = View.VISIBLE
             }
 
         }
     }
 
-    inner class ReceiveTextMessageViewHolder(view: View) : BaseViewHolder(view) {
+    inner class ReceiveTextHeaderMessageViewHolder(view: View) : BaseViewHolder(view) {
 
         override fun setView(data: ChatDTO) {
-
-
-            if (adapterPosition != 0 && (list[adapterPosition - 1].senderEamil == data.senderEamil)) {
-                itemView.text_receive_message_profile.visibility = View.GONE
-                itemView.text_receive_message_name.visibility = View.GONE
-            }
-
-            itemView.text_receive_message_body.text = data.content
-            itemView.text_receive_message_time.text = timeFormat.format(data.sendDate)
-            itemView.text_receive_message_name.text = data.senderName
+            itemView.text_receive_head_message_body.text = data.content
+            itemView.text_receive_head_message_name.text = data.senderName
+            itemView.text_receive_head_message_time.text = timeFormat.format(data.sendDate)
 
             if (data.unReadCount == 0) {
-                itemView.text_receive_message_unread_count.visibility = View.INVISIBLE
+                itemView.text_receive_head_message_unread_count.visibility = View.INVISIBLE
             } else {
-                itemView.text_receive_message_unread_count.visibility = View.VISIBLE
-                itemView.text_receive_message_unread_count.text = "${data.unReadCount}"
+                itemView.text_receive_head_message_unread_count.visibility = View.VISIBLE
+                itemView.text_receive_head_message_unread_count.text = "${data.unReadCount}"
+            }
+
+            if (list.size - 1 != adapterPosition && list[adapterPosition].sendDate.isEqualDayAndTime(list[adapterPosition + 1].sendDate)) {
+                itemView.text_receive_head_message_time.visibility = View.GONE
+            } else {
+                itemView.text_receive_head_message_time.visibility = View.VISIBLE
             }
 
         }
     }
+
+    inner class SendTextMiddleMessageViewHolder(view: View) : BaseViewHolder(view) {
+        override fun setView(data: ChatDTO) {
+            itemView.text_send_middle_message_body.text = data.content
+            itemView.text_send_middle_message_unread_count.text = "${data.unReadCount}"
+            itemView.text_send_middle_message_time.text = timeFormat.format(data.sendDate)
+
+            if (data.unReadCount == 0) {
+                itemView.text_send_middle_message_unread_count.visibility = View.INVISIBLE
+            } else {
+                itemView.text_send_middle_message_unread_count.visibility = View.VISIBLE
+                itemView.text_send_middle_message_unread_count.text = "${data.unReadCount}"
+            }
+
+
+
+            if (list.size - 1 != adapterPosition && list[adapterPosition].sendDate.isEqualDayAndTime(list[adapterPosition + 1].sendDate)) {
+                itemView.text_send_middle_message_time.visibility = View.GONE
+            } else {
+                itemView.text_send_middle_message_time.visibility = View.VISIBLE
+            }
+
+
+        }
+
+    }
+
+    inner class ReceiveTextMiddleMessageViewHolder(view: View) : BaseViewHolder(view) {
+        override fun setView(data: ChatDTO) {
+            itemView.text_receive_middle_message_body.text = data.content
+            itemView.text_receive_middle_message_unread_count.text = "${data.unReadCount}"
+            itemView.text_receive_middle_message_time.text = timeFormat.format(data.sendDate)
+
+            if (data.unReadCount == 0) {
+                itemView.text_receive_middle_message_unread_count.visibility = View.INVISIBLE
+            } else {
+                itemView.text_receive_middle_message_unread_count.visibility = View.VISIBLE
+                itemView.text_receive_middle_message_unread_count.text = "${data.unReadCount}"
+            }
+
+            if (list.size - 1 != adapterPosition && list[adapterPosition].sendDate.isEqualDayAndTime(list[adapterPosition + 1].sendDate)) {
+                itemView.text_receive_middle_message_time.visibility = View.GONE
+            } else {
+                itemView.text_receive_middle_message_time.visibility = View.VISIBLE
+            }
+
+        }
+
+    }
+
+
 }

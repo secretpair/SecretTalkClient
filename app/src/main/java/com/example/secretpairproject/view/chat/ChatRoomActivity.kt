@@ -60,6 +60,7 @@ class ChatRoomActivity : BaseActivity() {
         chat_recycler_view.adapter = adapter
 
         chatViewModel.getChatList().observe(this, Observer {
+            Log.e("치키라우", "바지 치키라우")
             if (it != null) {
                 list.clear()
                 list.addAll(it)
@@ -68,7 +69,6 @@ class ChatRoomActivity : BaseActivity() {
 
         })
 
-        chatViewModel.loadList(roomId)
 
         chat_room_send_box.post {
             chat_room_top_box.post {
@@ -120,6 +120,7 @@ class ChatRoomActivity : BaseActivity() {
         })
 
         chat_room_back_btn.setOnClickListener { finish() }
+        chatViewModel.loadList(roomId)
         test()
 
     }
@@ -133,7 +134,11 @@ class ChatRoomActivity : BaseActivity() {
 
         val time1 = Date()
         val time2 = Date(time1.time + 60000)
-        val time3 = Date(time2.time + 60000)
+        val time3 = Date(time2.time + 1)
+        val time4 = Date(time3.time + 60000)
+        val time5 = Date(time4.time + 1)
+        val time6 = Date(time5.time + 1)
+        val time7 = Date(time6.time + 60000)
 
         val idd = 'a';
         chatViewModel.insertChat(
@@ -144,15 +149,15 @@ class ChatRoomActivity : BaseActivity() {
             "1",
             ChatDTO("asdsd+${idd + 2}", "1", "alstn224@naver.com", "silvercong", TEXT, time2, "", 0, true, "그렇소!")
         )
+        chatViewModel.insertChat(
+            "1",
+            ChatDTO("asdsd+${idd + 3}", "1", "alstn225@naver.com", "배민수", TEXT, time3, "", 1, true, "애플 워치4 삼삼")
+        )
+        chatViewModel.insertChat(
+            "1",
+            ChatDTO("asdsd+${idd + 4}", "1", "alstn224@naver.com", "silvercong", TEXT, time4, "", 0, true, "제시")
+        )
 
-        chatViewModel.insertChat(
-            "1",
-            ChatDTO("asdsd+${idd + 4}", "1", "alstn224@naver.com", "silvercong", TEXT, time2, "", 0, true, "제시")
-        )
-        chatViewModel.insertChat(
-            "1",
-            ChatDTO("asdsd+${idd + 3}", "1", "alstn225@naver.com", "배민수", TEXT, time1, "", 1, true, "애플 워치4 삼삼")
-        )
         chatViewModel.insertChat(
             "1",
             ChatDTO(
@@ -160,7 +165,7 @@ class ChatRoomActivity : BaseActivity() {
                 "1",
                 "alstn225@naver.com", "배민수",
                 TEXT,
-                time2,
+                time5,
                 "",
                 1,
                 true,
@@ -169,11 +174,24 @@ class ChatRoomActivity : BaseActivity() {
         )
         chatViewModel.insertChat(
             "1",
-            ChatDTO("asdsd+${idd + 6}", "1", "alstn225@naver.com", "배민수", TEXT, time3, "", 1, true, "???")
+            ChatDTO("asdsd+${idd + 6}", "1", "alstn225@naver.com", "배민수", TEXT, time6, "", 1, true, "???")
         )
         chatViewModel.insertChat(
             "1",
-            ChatDTO("asdsd+${idd + 7}", "1", "alstn224@naver.com", "silvercong", TEXT, time3, "", 0, true, "안됨")
+            ChatDTO("asdsd+${idd + 7}", "1", "alstn224@naver.com", "silvercong", TEXT, time7, "", 0, true, "안됨")
+        )
+
+        chatViewModel.insertChat(
+            "1",
+            ChatDTO("asdsd+${idd + 8}", "1", "alstn224@naver.com", "silvercong", TEXT, time7, "", 0, true, "안됨")
+        )
+        chatViewModel.insertChat(
+            "1",
+            ChatDTO("asdsd+${idd + 9}", "1", "alstn224@naver.com", "silvercong", TEXT, time7, "", 0, true, "안됨")
+        )
+        chatViewModel.insertChat(
+            "1",
+            ChatDTO("asdsd+${idd + 10}", "1", "alstn224@naver.com", "silvercong", TEXT, time7, "", 0, true, "안됨")
         )
     }
 

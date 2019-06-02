@@ -3,10 +3,11 @@
     android:shape="rectangle">
 
     <!-- View background color -->
-    <solid android:color="@color/white" />
+    <solid android:color="@color/send_message" />
 
     <!-- The radius makes the corners rounded -->
     <corners
+        android:bottomLeftRadius="16dip"
         android:bottomRightRadius="16dip"
         android:topLeftRadius="16dip"
         android:topRightRadius="16dip" />

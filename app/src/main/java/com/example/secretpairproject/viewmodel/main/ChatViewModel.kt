@@ -2,6 +2,7 @@ package com.example.secretpairproject.viewmodel.main
 
 import android.annotation.SuppressLint
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.secretpairproject.base.BaseDisposableViewModel
@@ -29,6 +30,7 @@ class ChatViewModel(application: Application, roomId: String) : BaseDisposableVi
             .subscribe {
                 chatData.addAll(it)
                 chatData.notifyChange()
+
             }
     }
 
@@ -50,8 +52,7 @@ class ChatViewModel(application: Application, roomId: String) : BaseDisposableVi
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    chatData.add(data)
-                    chatData.notifyChange()
+                    Log.e("인서트 완료","한조 대기중 ")
                 })
     }
 
