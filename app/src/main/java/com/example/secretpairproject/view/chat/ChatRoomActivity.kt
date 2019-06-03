@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.secretpairproject.R
 import com.example.secretpairproject.base.BaseActivity
-import com.example.secretpairproject.config.TEXT
+import com.example.secretpairproject.config.*
 import com.example.secretpairproject.model.chat.ChatDTO
 import com.example.secretpairproject.model.chatroom.ChatRoomDTO
 import com.example.secretpairproject.view.chat.adapter.ChatAdapter
@@ -35,7 +35,7 @@ class ChatRoomActivity : BaseActivity() {
     private val chatViewModel: ChatViewModel by lazy {
         ViewModelProviders.of(
             this,
-            ChatViewModelFactory(application, "1")
+            ChatViewModelFactory(application, roomId)
         ).get(ChatViewModel::class.java)
     }
     private val list: ArrayList<ChatDTO> by lazy { arrayListOf<ChatDTO>() }
@@ -44,29 +44,94 @@ class ChatRoomActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_room)
         setBarTransparency()
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-
-
         initWidget()
 
     }
 
 
     private fun initWidget() {
-
-
         val adapter = ChatAdapter(list, applicationContext)
         chat_recycler_view.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         chat_recycler_view.adapter = adapter
 
-        chatViewModel.getChatList().observe(this, Observer {
-            Log.e("치키라우", "바지 치키라우")
-            if (it != null) {
-                list.clear()
-                list.addAll(it)
-                adapter.notifyDataSetChanged()
-            }
+        chat_recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
 
+                val layoutManager = chat_recycler_view.layoutManager as LinearLayoutManager
+                val totalItemCount = layoutManager.itemCount
+
+                val lastVisible = layoutManager.findLastVisibleItemPosition()
+                val firstVisible = layoutManager.findFirstVisibleItemPosition()
+
+                adapter.layoutLastItemChangeMarginView(lastVisible)
+                adapter.layoutLastItemChangeMarginView(firstVisible)
+            }
+        })
+
+
+        chatViewModel.getChatList().observe(this, Observer {
+
+
+            if (list.size == 0) {
+                var prev: String = ""
+                if (it != null && it.size > 0) {
+                    val newList = ArrayList<ChatDTO>()
+                    for (i in 0 until it.size) {
+                        val now = it[i].sendDate.getYearMonthDayStr()
+                        if (now != prev) {
+                            prev = now
+                            newList.add(ChatDTO(now, "", "", "", CHAT_DATE_MESSAGE, it[i].sendDate, "", 0, false, ""))
+                        }
+                        newList.add(it[i])
+                    }
+                    list.addAll(newList)
+                }
+            } else {
+                if (it != null && it.size > 0) {
+                    var prev: String = ""
+                    val currentLastDate = list[0].sendDate.getYearMonthDayStr()
+                    val startDate = it[0].sendDate.getYearMonthDayStr()
+                    val endDate = it[it.size - 1].sendDate.getYearMonthDayStr()
+
+                    //새로 가져온 데이터들의 전송 날짜가 현재의 가장 과거와 날짜가 일치 할 때
+                    if ((startDate == list[list.size - 1].sendDate.getYearMonthDayStr()) && (endDate == list[list.size - 1].sendDate.getYearMonthDayStr())) {
+                        list.addAll(1, it)
+                    }
+                    //새로 가져온 데이터들의 전송 날짜가 현재의 가장 과거와 일치하는게 없을 때
+                    //새로 가져온 데이터들의 전송 날짜가 현재의 가장 과거와 일부 일치하고 일부는 일치하지 않을 떄
+                    else {
+
+                        val newList = ArrayList<ChatDTO>()
+                        for (i in 0 until it.size) {
+                            if (list[0].type == CHAT_DATE_MESSAGE && currentLastDate == it[i].sendDate.getYearMonthDayStr()) {
+                                newList.add(list.removeAt(0))
+                            }
+                            val now = it[i].sendDate.getYearMonthDayStr()
+                            if (now != prev) {
+                                prev = now
+                                newList.add(
+                                    ChatDTO(
+                                        now,
+                                        "",
+                                        "",
+                                        "",
+                                        CHAT_DATE_MESSAGE,
+                                        it[i].sendDate,
+                                        "",
+                                        0,
+                                        false,
+                                        ""
+                                    )
+                                )
+                            }
+                            newList.add(it[i])
+                        }
+                        list.addAll(0, newList)
+                    }
+                }
+            }
+            adapter.notifyDataSetChanged()
         })
 
 
@@ -88,10 +153,11 @@ class ChatRoomActivity : BaseActivity() {
                         topBox.height = topBaseSize
                     } else {
                         sendBox.height = 0
-                        topBox.height = 0;
+                        topBox.height = 0
                     }
                     chat_room_send_box.layoutParams = sendBox
                     chat_room_top_box.layoutParams = topBox
+
                 }
                 chat_room_root_layout.viewTreeObserver.addOnGlobalLayoutListener(globalListener)
             }
@@ -121,7 +187,7 @@ class ChatRoomActivity : BaseActivity() {
 
         chat_room_back_btn.setOnClickListener { finish() }
         chatViewModel.loadList(roomId)
-        test()
+
 
     }
 

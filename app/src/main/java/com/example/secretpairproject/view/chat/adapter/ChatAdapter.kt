@@ -13,7 +13,9 @@ import kotlinx.android.synthetic.main.recycler_item_chat_receive_head_message.vi
 import kotlinx.android.synthetic.main.recycler_item_chat_receive_middle_message.view.*
 import kotlinx.android.synthetic.main.recycler_item_chat_send_head_message.view.*
 import kotlinx.android.synthetic.main.recycler_item_chat_send_middle_message.view.*
+import kotlinx.android.synthetic.main.recyclerview_item_chat_notification.view.*
 import java.text.SimpleDateFormat
+import java.util.*
 
 class ChatAdapter(private val list: MutableList<ChatDTO>, context: Context) :
     RecyclerView.Adapter<ChatAdapter.BaseViewHolder>() {
@@ -22,6 +24,8 @@ class ChatAdapter(private val list: MutableList<ChatDTO>, context: Context) :
         SharePreferenceManager.getString(context.applicationContext, "email")
     }
     private val timeFormat = SimpleDateFormat("HH:mm")
+    private val currentYearDateFormat = SimpleDateFormat("MM월 dd일")
+    private val beforeYearDateFormat = SimpleDateFormat("YY년 MM월 dd일")
 
     override fun getItemViewType(position: Int): Int {
         val chatData = list[position]
@@ -37,6 +41,11 @@ class ChatAdapter(private val list: MutableList<ChatDTO>, context: Context) :
                     return RECEIVE_MIDDLE_TEXT_MESSAGE
                 }
             }
+
+            CHAT_DATE_MESSAGE -> {
+                return CHAT_DATE_MESSAGE
+            }
+
         }
 
 
@@ -68,6 +77,14 @@ class ChatAdapter(private val list: MutableList<ChatDTO>, context: Context) :
                         .inflate(R.layout.recycler_item_chat_receive_middle_message, parent, false)
                 return ReceiveTextMiddleMessageViewHolder(view)
             }
+            CHAT_DATE_MESSAGE -> {
+                view =
+                    LayoutInflater.from(parent.context)
+                        .inflate(R.layout.recyclerview_item_chat_notification, parent, false)
+                return DateMessageViewHolder(view)
+
+            }
+
             else -> return ReceiveTextHeaderMessageViewHolder(
                 LayoutInflater.from(parent.context).inflate(
                     R.layout.recycler_item_chat_send_head_message,
@@ -75,6 +92,7 @@ class ChatAdapter(private val list: MutableList<ChatDTO>, context: Context) :
                     false
                 )
             )
+
         }
 
 
@@ -101,6 +119,16 @@ class ChatAdapter(private val list: MutableList<ChatDTO>, context: Context) :
         list.addAll(lists)
         list.sort()
     }
+
+    fun layoutFirstItemChangeMarginView(position: Int) {
+
+
+    }
+
+    fun layoutLastItemChangeMarginView(position: Int) {
+
+    }
+
 
     abstract inner class BaseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         abstract fun setView(data: ChatDTO)
@@ -196,6 +224,17 @@ class ChatAdapter(private val list: MutableList<ChatDTO>, context: Context) :
                 itemView.text_receive_middle_message_time.visibility = View.VISIBLE
             }
 
+        }
+
+    }
+
+    inner class DateMessageViewHolder(view: View) : BaseViewHolder(view) {
+        override fun setView(data: ChatDTO) {
+            if (data.sendDate.isEqualDay(Date()))
+                itemView.chat_notification.text = currentYearDateFormat.format(data.sendDate)
+            else {
+                itemView.chat_notification.text = beforeYearDateFormat.format(data.sendDate)
+            }
         }
 
     }

@@ -56,10 +56,7 @@ object FriendFragment : Fragment() {
             adapter.updateFriendList(it)
             adapter.notifyDataSetChanged()
         })
-
-
         friendViewModel.loadList()
-//        test()
         return view
     }
 

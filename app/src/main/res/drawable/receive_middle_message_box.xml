@@ -7,10 +7,10 @@
 
     <!-- The radius makes the corners rounded -->
     <corners
-        android:topLeftRadius="16dip"
-        android:bottomLeftRadius="16dip"
-        android:bottomRightRadius="16dip"
-        android:topRightRadius="16dip" />
+        android:topLeftRadius="10dip"
+        android:bottomLeftRadius="10dip"
+        android:bottomRightRadius="10dip"
+        android:topRightRadius="10dip" />
 
 
 </shape>

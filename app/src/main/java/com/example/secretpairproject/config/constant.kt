@@ -16,6 +16,10 @@ const val HEADER_MODULATION_CHECK_VALUE = 100
 const val TEXT = 900
 const val IMAGE = 901
 
+
+
+const val CHAT_DATE_MESSAGE = 910
+
 const val SEND_HEAD_TEXT_MESSAGE = 921
 const val SEND_MIDDLE_TEXT_MESSAGE = 922
 

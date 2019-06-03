@@ -52,7 +52,6 @@ class ChatViewModel(application: Application, roomId: String) : BaseDisposableVi
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    Log.e("인서트 완료","한조 대기중 ")
                 })
     }
 

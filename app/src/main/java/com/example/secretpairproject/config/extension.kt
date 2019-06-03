@@ -32,3 +32,33 @@ fun Date.isEqualDayAndTime(date: Date): Boolean {
             car1.get(Calendar.MINUTE) == car2.get(Calendar.MINUTE)
 
 }
+
+
+
+fun Date.getYearMonthDayStr(): String {
+    val car = Calendar.getInstance()
+    car.time = this
+    return "${car.get(Calendar.YEAR)}.${car.get(Calendar.MONTH)}.${car.get(Calendar.DAY_OF_MONTH)}"
+}
+
+fun Date.cgetDay(): Int {
+    val car = Calendar.getInstance()
+    car.time = this
+    return car.get(Calendar.DAY_OF_MONTH)
+}
+
+fun Date.cgetMonth(): Int {
+    val car = Calendar.getInstance()
+    car.time = this
+    return car.get(Calendar.MONTH)
+}
+
+
+fun Date.cgetYear(): Int {
+    val car = Calendar.getInstance()
+    car.time = this
+    return car.get(Calendar.YEAR)
+}
+
+
+
