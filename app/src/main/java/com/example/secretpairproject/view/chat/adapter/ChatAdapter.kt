@@ -128,8 +128,6 @@ class ChatAdapter(private val list: MutableList<ChatDTO>, context: Context) :
     fun layoutLastItemChangeMarginView(position: Int) {
 
     }
-
-
     abstract inner class BaseViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         abstract fun setView(data: ChatDTO)
     }

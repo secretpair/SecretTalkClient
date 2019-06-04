@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.secretpairproject.R
+import com.example.secretpairproject.config.SHARE_PREFERENCE_MANAGER_EMAIL
 import com.example.secretpairproject.model.chatroom.ChatRoomDTO
+import com.example.secretpairproject.util.SharePreferenceManager
 import com.example.secretpairproject.view.chat.ChatRoomActivity
 import kotlinx.android.synthetic.main.recycler_item_chatroom.view.*
 import java.text.SimpleDateFormat
@@ -19,6 +21,9 @@ class ChatRoomAdapter(private val list: MutableList<ChatRoomDTO>, context: Conte
     private val normalDateFormat = SimpleDateFormat("MM월 dd일")
     private val todayDateFormat = SimpleDateFormat("HH:mm")
     private val yesterDayDateFormat = SimpleDateFormat("어제")
+    private val myEmail: String by lazy {
+        SharePreferenceManager.getString(context.applicationContext, SHARE_PREFERENCE_MANAGER_EMAIL)
+    }
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -49,6 +54,8 @@ class ChatRoomAdapter(private val list: MutableList<ChatRoomDTO>, context: Conte
 
                 Intent(itemView.context, ChatRoomActivity::class.java).let {
                     it.putExtra("roomId", data.id)
+                    it.putExtra("email",myEmail)
+                    it.putExtra("name","배민수")
                     itemView.context.startActivity(it)
                 }
             }

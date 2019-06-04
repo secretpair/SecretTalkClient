@@ -9,6 +9,7 @@ import com.example.secretpairproject.base.BaseDisposableViewModel
 import com.example.secretpairproject.base.ListLiveData
 import com.example.secretpairproject.model.chat.ChatDTO
 import com.example.secretpairproject.model.chat.ChatRepository
+import com.example.secretpairproject.view.chat.adapter.ChatAdapter
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -52,6 +53,8 @@ class ChatViewModel(application: Application, roomId: String) : BaseDisposableVi
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
+                    chatData.add(data)
+                    chatData.notifyChange()
                 })
     }
 
