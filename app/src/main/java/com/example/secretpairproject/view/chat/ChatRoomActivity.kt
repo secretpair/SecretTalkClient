@@ -20,10 +20,12 @@ import com.example.secretpairproject.base.BaseActivity
 import com.example.secretpairproject.config.*
 import com.example.secretpairproject.model.chat.ChatDTO
 import com.example.secretpairproject.model.chatroom.ChatRoomDTO
+import com.example.secretpairproject.util.SocketManager
 import com.example.secretpairproject.view.chat.adapter.ChatAdapter
 import com.example.secretpairproject.view.main.adapter.ChatRoomAdapter
 import com.example.secretpairproject.viewmodel.main.ChatViewModel
 import com.example.secretpairproject.viewmodel.main.ChatViewModelFactory
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_chat_room.*
 import java.util.*
 
@@ -235,7 +237,11 @@ class ChatRoomActivity : BaseActivity() {
         val id = "$roomId//${Date().time}//${message.hashCode()}"
         log(id)
         val chat = ChatDTO(id, roomId, myEmail, myName, TEXT, Date(), "", userCount - 1, true, message)
-        chatViewModel.insertChat(roomId, chat)
+
+        val gson = Gson()
+        val strJSON = gson.toJson(chat)
+        SocketManager.socket.emit(SOCKET_ECHO,strJSON)
+//        chatViewModel.insertChat(roomId, chat)
 
 
     }
