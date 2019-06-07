@@ -78,7 +78,6 @@ class ChatRoomActivity : BaseActivity() {
                 super.onScrolled(recyclerView, dx, dy)
 
                 val layoutManager = chat_recycler_view.layoutManager as LinearLayoutManager
-                val totalItemCount = layoutManager.itemCount
 
                 val lastVisible = layoutManager.findLastVisibleItemPosition()
                 val firstVisible = layoutManager.findFirstVisibleItemPosition()
@@ -240,7 +239,12 @@ class ChatRoomActivity : BaseActivity() {
 
         val gson = Gson()
         val strJSON = gson.toJson(chat)
+
         SocketManager.socket.emit(SOCKET_ECHO,strJSON)
+        SocketManager.socket.emit(CHAT_ROOM_JOIN,strJSON)
+        SocketManager.socket.emit(CHAT_ROOM_LEAVE,strJSON)
+
+
 //        chatViewModel.insertChat(roomId, chat)
 
 

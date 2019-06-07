@@ -23,16 +23,15 @@ object SocketManager {
         manager.reconnection(true)
         manager.reconnectionAttempts(RECONNECT_TRY_MAX_COUNT)
         manager.reconnectionDelay(RECONNECT_DELAY)
-        socket = manager.socket("/chat")
+        socket = manager.socket(NS_CHAT)
     }
 
     private fun makeConnection() {
         socket.connect()
-        if (socket.connected()) {
-            Log.e("연결했냐", "했심다 형님")
-        } else {
-            Log.e("연결했냐", "실패 했심다 형님")
-        }
+    }
+
+    private fun disconnection() {
+        socket.disconnect()
     }
 
 
