@@ -1,11 +1,14 @@
 package com.example.secretpairproject.model.chat
 
-import android.app.Application
+import  android.app.Application
 import com.example.secretpairproject.config.room.RoomDatabaseConfig
+import com.github.nkzawa.emitter.Emitter
+import com.google.gson.Gson
 import io.reactivex.Maybe
 
 
 class ChatRepository(application: Application) {
+
 
     private val chatDAO: ChatDAO by lazy {
         val db = RoomDatabaseConfig.getInstance(application)!!
@@ -22,6 +25,7 @@ class ChatRepository(application: Application) {
     fun getLocalChatRoomList(roomId: String, page: Int): Maybe<List<ChatDTO>> {
         return Maybe.fromCallable { chatDAO.getChatByRoomId(roomId, page) }
     }
+
 
 
 

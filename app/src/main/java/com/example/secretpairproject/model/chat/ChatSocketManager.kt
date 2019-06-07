@@ -1,19 +1,19 @@
-package com.example.secretpairproject.util
+package com.example.secretpairproject.model.chat
 
 
-import android.util.Log
 import com.example.secretpairproject.config.*
+import com.github.nkzawa.emitter.Emitter
 import com.github.nkzawa.socketio.client.Manager
 import com.github.nkzawa.socketio.client.Socket
+import com.google.gson.Gson
 import java.net.URI
 
-object SocketManager {
+object ChatSocketManager {
 
     lateinit var socket: Socket
 
     init {
         createSocket()
-        makeConnection()
     }
 
 
@@ -26,8 +26,17 @@ object SocketManager {
         socket = manager.socket(NS_CHAT)
     }
 
-    private fun makeConnection() {
+
+     fun makeConnection() {
         socket.connect()
+    }
+
+     fun registerSocketListener(eventName: String, listener: Emitter.Listener) {
+        socket.on(eventName, listener)
+    }
+
+     fun unRegisterSocketListener() {
+        socket.off()
     }
 
     private fun disconnection() {

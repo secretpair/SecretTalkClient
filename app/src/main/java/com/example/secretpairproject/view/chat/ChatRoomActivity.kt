@@ -4,7 +4,6 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
@@ -19,10 +18,8 @@ import com.example.secretpairproject.R
 import com.example.secretpairproject.base.BaseActivity
 import com.example.secretpairproject.config.*
 import com.example.secretpairproject.model.chat.ChatDTO
-import com.example.secretpairproject.model.chatroom.ChatRoomDTO
-import com.example.secretpairproject.util.SocketManager
+import com.example.secretpairproject.model.chat.ChatSocketManager
 import com.example.secretpairproject.view.chat.adapter.ChatAdapter
-import com.example.secretpairproject.view.main.adapter.ChatRoomAdapter
 import com.example.secretpairproject.viewmodel.main.ChatViewModel
 import com.example.secretpairproject.viewmodel.main.ChatViewModelFactory
 import com.google.gson.Gson
@@ -60,6 +57,9 @@ class ChatRoomActivity : BaseActivity() {
         setBarTransparency()
         initWidget()
 
+        ChatSocketManager.socket.emit(CHAT_ROOM_JOIN, roomId)
+        ChatSocketManager.registerSocketListener(RECEIVE_TEXT_MESSAGE, chatViewModel.receiveTextMessageListener)
+        ChatSocketManager.makeConnection()
     }
 
 
@@ -227,7 +227,7 @@ class ChatRoomActivity : BaseActivity() {
                 chat_recycler_view.smoothScrollToPosition(list.size - 1)
         }
 
-        test()
+//        test()
     }
 
 
@@ -239,11 +239,7 @@ class ChatRoomActivity : BaseActivity() {
 
         val gson = Gson()
         val strJSON = gson.toJson(chat)
-
-        SocketManager.socket.emit(SOCKET_ECHO,strJSON)
-        SocketManager.socket.emit(CHAT_ROOM_JOIN,strJSON)
-        SocketManager.socket.emit(CHAT_ROOM_LEAVE,strJSON)
-
+        ChatSocketManager.socket.emit(SEND_TEXT_MESSAGE, strJSON)
 
 //        chatViewModel.insertChat(roomId, chat)
 
@@ -258,9 +254,15 @@ class ChatRoomActivity : BaseActivity() {
         chat_room_preview_container.visibility = View.INVISIBLE
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+
+    override fun onStop() {
+        super.onStop()
+        log("요기요요요")
+        ChatSocketManager.unRegisterSocketListener()
+        ChatSocketManager.socket.emit(CHAT_ROOM_LEAVE, roomId)
         chat_room_root_layout.viewTreeObserver.addOnGlobalLayoutListener(null)
+
+
     }
 
     private fun test() {

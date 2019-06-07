@@ -10,6 +10,8 @@ import com.example.secretpairproject.base.ListLiveData
 import com.example.secretpairproject.model.chat.ChatDTO
 import com.example.secretpairproject.model.chat.ChatRepository
 import com.example.secretpairproject.view.chat.adapter.ChatAdapter
+import com.github.nkzawa.emitter.Emitter
+import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -56,6 +58,16 @@ class ChatViewModel(application: Application, roomId: String) : BaseDisposableVi
                     chatData.add(data)
                     chatData.notifyChange()
                 })
+    }
+
+
+    val receiveTextMessageListener = Emitter.Listener {
+        Log.e("확인중", "1111")
+        val gson = Gson()
+        val messageJson = gson.toJson(it)
+        val message = gson.fromJson(messageJson, ChatDTO::class.java)
+        Log.e("확인중", message.toString())
+        insertChat(message.roomId, message)
     }
 
 
