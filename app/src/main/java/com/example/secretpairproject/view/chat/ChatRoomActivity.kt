@@ -4,6 +4,7 @@ import android.graphics.Rect
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
@@ -19,10 +20,15 @@ import com.example.secretpairproject.base.BaseActivity
 import com.example.secretpairproject.config.*
 import com.example.secretpairproject.model.chat.ChatDTO
 import com.example.secretpairproject.model.chat.ChatSocketManager
+import com.example.secretpairproject.util.RecyclerViewPositionHelper
 import com.example.secretpairproject.view.chat.adapter.ChatAdapter
 import com.example.secretpairproject.viewmodel.main.ChatViewModel
 import com.example.secretpairproject.viewmodel.main.ChatViewModelFactory
+import com.github.nkzawa.emitter.Emitter
 import com.google.gson.Gson
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
+import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.activity_chat_room.*
 import java.util.*
 
@@ -40,6 +46,9 @@ class ChatRoomActivity : BaseActivity() {
         intent.getStringExtra("name")
     }
 
+    private val listHelper by lazy {
+        RecyclerViewPositionHelper.createHelper(chat_recycler_view)
+    }
     private val userCount = 2
 
     private val chatViewModel: ChatViewModel by lazy {
@@ -57,11 +66,34 @@ class ChatRoomActivity : BaseActivity() {
         setBarTransparency()
         initWidget()
 
-        ChatSocketManager.socket.emit(CHAT_ROOM_JOIN, roomId)
-        ChatSocketManager.registerSocketListener(RECEIVE_TEXT_MESSAGE, chatViewModel.receiveTextMessageListener)
-        ChatSocketManager.makeConnection()
+
     }
 
+
+    val receiveTextMessageListener = Emitter.Listener {
+        val listType = object : TypeToken<ArrayList<ChatDTO>>() {
+        }.type
+
+        val parser = JsonParser()
+        val gson = Gson()
+        for (json in it) {
+            val jsonObject: JsonObject = parser.parse(json.toString()) as JsonObject
+            val chat = gson.fromJson(jsonObject, ChatDTO::class.java)
+            chatViewModel.insertChat(chat.roomId, chat)
+
+            if (chat.senderEamil != myEmail && listHelper.findLastVisibleItemPosition() != listHelper.getItemCount() - 1) {
+                visiblePreview(chat)
+            }
+        }
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        ChatSocketManager.socket.emit(CHAT_ROOM_JOIN, roomId)
+        ChatSocketManager.registerSocketListener(RECEIVE_TEXT_MESSAGE, receiveTextMessageListener)
+        ChatSocketManager.makeConnection()
+    }
 
     private fun initWidget() {
 
@@ -76,6 +108,13 @@ class ChatRoomActivity : BaseActivity() {
         chat_recycler_view.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
+
+
+
+
+                if (listHelper.findLastVisibleItemPosition() == listHelper.getItemCount() - 1) {
+                    invisiblePreview()
+                }
 
                 val layoutManager = chat_recycler_view.layoutManager as LinearLayoutManager
 
@@ -118,13 +157,11 @@ class ChatRoomActivity : BaseActivity() {
             chat_room_send_box.post {
                 chat_room_top_box.post {
                     chat_room_preview_container.post {
+
                         val sendBaseSize = chat_room_send_box.height
                         val topBaseSize = chat_room_top_box.height
                         val previewBaseSize = chat_room_preview_container.height
-
-
                         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
-
 
                         val globalListener = ViewTreeObserver.OnGlobalLayoutListener {
                             val r = Rect();
@@ -227,7 +264,6 @@ class ChatRoomActivity : BaseActivity() {
                 chat_recycler_view.smoothScrollToPosition(list.size - 1)
         }
 
-//        test()
     }
 
 
@@ -240,7 +276,8 @@ class ChatRoomActivity : BaseActivity() {
         val gson = Gson()
         val strJSON = gson.toJson(chat)
         ChatSocketManager.socket.emit(SEND_TEXT_MESSAGE, strJSON)
-
+        chat_recycler_view.scrollToPosition((chat_recycler_view.layoutManager as LinearLayoutManager).findLastCompletelyVisibleItemPosition())
+        invisiblePreview()
 //        chatViewModel.insertChat(roomId, chat)
 
 
@@ -257,77 +294,10 @@ class ChatRoomActivity : BaseActivity() {
 
     override fun onStop() {
         super.onStop()
-        log("요기요요요")
         ChatSocketManager.unRegisterSocketListener()
         ChatSocketManager.socket.emit(CHAT_ROOM_LEAVE, roomId)
+        ChatSocketManager.disconnection()
         chat_room_root_layout.viewTreeObserver.addOnGlobalLayoutListener(null)
-
-
-    }
-
-    private fun test() {
-
-        val time1 = Date()
-        val time2 = Date(time1.time + 60000)
-        val time3 = Date(time2.time + 1)
-        val time4 = Date(time3.time + 60000)
-        val time5 = Date(time4.time + 1)
-        val time6 = Date(time5.time + 1)
-        val time7 = Date(time6.time + 60000)
-
-        val idd = 'a';
-        chatViewModel.insertChat(
-            "1",
-            ChatDTO("asdsd+${idd + 1}", "1", "alstn225@naver.com", "배민수", TEXT, time1, "", 1, true, "안녕하소")
-        )
-        chatViewModel.insertChat(
-            "1",
-            ChatDTO("asdsd+${idd + 2}", "1", "alstn224@naver.com", "silvercong", TEXT, time2, "", 0, true, "그렇소!")
-        )
-        chatViewModel.insertChat(
-            "1",
-            ChatDTO("asdsd+${idd + 3}", "1", "alstn225@naver.com", "배민수", TEXT, time3, "", 1, true, "애플 워치4 삼삼")
-        )
-        chatViewModel.insertChat(
-            "1",
-            ChatDTO("asdsd+${idd + 4}", "1", "alstn224@naver.com", "silvercong", TEXT, time4, "", 0, true, "제시")
-        )
-
-        chatViewModel.insertChat(
-            "1",
-            ChatDTO(
-                "asdsd+${idd + 5}",
-                "1",
-                "alstn225@naver.com", "배민수",
-                TEXT,
-                time5,
-                "",
-                1,
-                true,
-                "붕어빵3개랑 펩시콜라 1.25L로 가능?"
-            )
-        )
-        chatViewModel.insertChat(
-            "1",
-            ChatDTO("asdsd+${idd + 6}", "1", "alstn225@naver.com", "배민수", TEXT, time6, "", 1, true, "???")
-        )
-        chatViewModel.insertChat(
-            "1",
-            ChatDTO("asdsd+${idd + 7}", "1", "alstn224@naver.com", "silvercong", TEXT, time7, "", 0, true, "안됨")
-        )
-
-        chatViewModel.insertChat(
-            "1",
-            ChatDTO("asdsd+${idd + 8}", "1", "alstn224@naver.com", "silvercong", TEXT, time7, "", 0, true, "안됨")
-        )
-        chatViewModel.insertChat(
-            "1",
-            ChatDTO("asdsd+${idd + 9}", "1", "alstn224@naver.com", "silvercong", TEXT, time7, "", 0, true, "안됨")
-        )
-        chatViewModel.insertChat(
-            "1",
-            ChatDTO("asdsd+${idd + 10}", "1", "alstn224@naver.com", "silvercong", TEXT, time7, "", 0, true, "안됨")
-        )
     }
 
 }

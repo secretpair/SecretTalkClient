@@ -39,7 +39,7 @@ object ChatSocketManager {
         socket.off()
     }
 
-    private fun disconnection() {
+     fun disconnection() {
         socket.disconnect()
     }
 
