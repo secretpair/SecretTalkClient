@@ -1,39 +1,54 @@
 package com.example.secretpairproject.model.friend
 
 import android.app.Application
-import androidx.lifecycle.LiveData
-import io.reactivex.Flowable
+import com.example.secretpairproject.config.*
+import com.example.secretpairproject.config.room.RoomDatabaseConfig
+import io.reactivex.Maybe
 
 
 class FriendRepository(application: Application) {
 
-
     private val friendDao: FriendDAO by lazy {
-        val db = FriendRoomDatabase.getInstance(application)!!
+        val db = RoomDatabaseConfig.getInstance(application)!!
         db.friendDao()
     }
 
-    fun getLocalAllInfo() : LiveData<List<FriendDTO>>{
-        return friendDao.getAllFriends()
+
+    //Only Local
+    fun getLocalMyInfo(): Maybe<FriendDTO> {
+        return Maybe.fromCallable { friendDao.getMyInfo(ME) }
     }
 
-
-    fun getLocalMe(): LiveData<List<FriendDTO>> {
-        return friendDao.getFriendMe()
+    fun getLocalBirthDayList(): Maybe<List<FriendDTO>> {
+        return Maybe.fromCallable { friendDao.getIncludeHeader(BIRTHDAY_HEADER, BIRTHDAY_FRIEND) }
     }
 
-    fun getLocalAllFriend(): LiveData<List<FriendDTO>> {
-        return friendDao.getAllFriends()
+    fun getLocalRecommendData(): Maybe<List<FriendDTO>> {
+
+        return Maybe.fromCallable { friendDao.getIncludeHeader(RECOMMEND_HEADER, RECOMMEND_FRIEND) }
     }
 
-    fun insertFriend(friend: FriendDTO): Flowable<Unit> {
-        return Flowable.fromCallable { friendDao.insertFriend(friend) }
+    fun getLocalNormalFriend(): Maybe<List<FriendDTO>> {
+        return Maybe.fromCallable { friendDao.getIncludeHeader(FRIEND_HEADER, FRIEND_FRIEND) }
     }
 
-
-    fun deleteFriend(vararg deleteFriends: FriendDTO): Flowable<Unit> {
-        return Flowable.fromCallable { friendDao.deleteFriend(*deleteFriends) }
+    fun getLocalNormalFriendSearch(keyword: String): Maybe<List<FriendDTO>> {
+        return Maybe.fromCallable { friendDao.getNameLikeFriend(FRIEND_HEADER, FRIEND_FRIEND, keyword) }
     }
 
+    fun getLocalFriendByViewType(viewType: Int): Maybe<FriendDTO> {
+        return Maybe.fromCallable { friendDao.getFriendByViewType(viewType) }
+    }
+    //Network
+
+
+    //Local + Network
+    fun insertFriend(friendDTO: FriendDTO): Maybe<Unit> {
+        return Maybe.fromCallable { friendDao.insertFriend(friendDTO) }
+    }
+
+    fun deleteFriend(friendDTO: FriendDTO): Maybe<Unit> {
+        return Maybe.fromCallable { friendDao.deleteFriend(friendDTO) }
+    }
 
 }

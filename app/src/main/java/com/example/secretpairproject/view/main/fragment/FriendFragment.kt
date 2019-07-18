@@ -11,63 +11,104 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.secretpairproject.R
-import com.example.secretpairproject.config.*
+import com.example.secretpairproject.base.ItemAnimator
+import com.example.secretpairproject.config.FRIEND_FRIEND
 import com.example.secretpairproject.model.friend.FriendDTO
-import com.example.secretpairproject.viewmodel.friend.FriendViewModel
+import com.example.secretpairproject.view.main.adapter.FriendAdapter
+import com.example.secretpairproject.viewmodel.main.FriendViewModel
 import kotlinx.android.synthetic.main.fragment_1friend.view.*
 
 
 object FriendFragment : Fragment() {
 
-
-    private val list: ArrayList<FriendDTO> by lazy { arrayListOf<FriendDTO>() }
-    private lateinit var friendViewModel: FriendViewModel
+    private val friendViewModel by lazy { ViewModelProviders.of(this).get(FriendViewModel::class.java) }
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_1friend, container, false)
 
-        val adapter = FriendAdapter(list) { email ->
-            Toast.makeText(context!!.applicationContext, "${email}님", Toast.LENGTH_SHORT).show()
-        }
+        val adapter =
+            FriendAdapter(context!!.applicationContext) { email ->
+                Toast.makeText(context!!.applicationContext, "${email}님", Toast.LENGTH_SHORT).show()
+            }
+        view.friend_recycler_view.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        view.friend_recycler_view.adapter = adapter
 
-        friendViewModel = ViewModelProviders.of(this).get(FriendViewModel::class.java)
-        friendViewModel.getFriendAllInfo().observe(this, Observer {
-            list.clear()
-            list.addAll(it!!)
+        view.friend_recycler_view.itemAnimator = ItemAnimator()
+
+        friendViewModel.myData.observe(this, Observer {
+            adapter.updateMyInfo(it)
+            adapter.notifyDataSetChanged()
+        })
+
+        friendViewModel.birthDayData.observe(this, Observer {
+            adapter.updateBirthDayList(it)
+            adapter.notifyDataSetChanged()
+        })
+
+        friendViewModel.recommendData.observe(this, Observer {
+            adapter.updateRecommendList(it)
             adapter.notifyDataSetChanged()
         })
 
 
-        view.friend_recycler_view.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        view.friend_recycler_view.adapter = adapter
-
-        testFunction()
-
+        friendViewModel.normalFriendData.observe(this, Observer {
+            adapter.updateFriendList(it)
+            adapter.notifyDataSetChanged()
+        })
+        friendViewModel.loadList()
         return view
     }
 
-    private fun testFunction() {
 
+    private fun test() {
 
-        val email = "alstn224@naver.com"
-        friendViewModel.insertFriend("kluge0221@gmail.com", ME)
-
-        friendViewModel.insertFriend("BIRTHDAY_HEADER","오늘 생일인 친구", BIRTHDAY_HEADER)
-        friendViewModel.insertFriend("RECOMMEND_HEADER","추천친구", RECOMMEND_HEADER)
-        friendViewModel.insertFriend("RECOMMEND_FRIEND","새로운 친구를 만나보세요!", RECOMMEND_FRIEND)
-
-        friendViewModel.insertFriend("FRIEND_HEADER","추천친구", FRIEND_HEADER)
-        friendViewModel.insertFriend(email + "1", FRIEND_FRIEND)
-        friendViewModel.insertFriend(email + "2", FRIEND_FRIEND)
-        friendViewModel.insertFriend(email + "3", FRIEND_FRIEND)
-        friendViewModel.insertFriend(email + "4", FRIEND_FRIEND)
-        friendViewModel.insertFriend(email + "5", FRIEND_FRIEND)
-        friendViewModel.insertFriend(email + "6", FRIEND_FRIEND)
-        friendViewModel.insertFriend(email + "7", FRIEND_FRIEND)
-        friendViewModel.insertFriend(email + "8", FRIEND_FRIEND)
-        friendViewModel.insertFriend(email + "9", FRIEND_FRIEND)
-
+        friendViewModel.insertFriend(
+            FriendDTO(
+                "alstn211@naver.com",
+                "김민수1",
+                "",
+                " ",
+                " ",
+                " ",
+                FRIEND_FRIEND
+            )
+        )
+        friendViewModel.insertFriend(FriendDTO("alstn212@naver.com", "김민수2", "", " ", " ", " ", FRIEND_FRIEND))
+        friendViewModel.insertFriend(
+            FriendDTO(
+                "alstn213@naver.com",
+                "김민수4",
+                "카카오톡 클론",
+                " ",
+                " ",
+                " ",
+                FRIEND_FRIEND
+            )
+        )
+        friendViewModel.insertFriend(FriendDTO("alstn214@naver.com", "배민수1", "", " ", " ", " ", FRIEND_FRIEND))
+        friendViewModel.insertFriend(
+            FriendDTO(
+                "alstn215@naver.com",
+                "배민수2",
+                "상태메시지",
+                " ",
+                " ",
+                " ",
+                FRIEND_FRIEND
+            )
+        )
+        friendViewModel.insertFriend(
+            FriendDTO(
+                "alstn216@naver.com",
+                "배민수3",
+                "",
+                " ",
+                " ",
+                " ",
+                FRIEND_FRIEND
+            )
+        )
     }
 
 }

@@ -22,6 +22,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    dataBinding {
+        enabled = true
+    }
 }
 
 dependencies {
@@ -58,7 +61,15 @@ dependencies {
     kapt "android.arch.persistence.room:compiler:1.1.1"
 
     //rx
-
     implementation "androidx.room:room-rxjava2:$room_version"
+
+    //socket.io
+    implementation 'com.github.nkzawa:socket.io-client:0.6.0'
+
+    //gson
+    implementation 'com.google.code.gson:gson:2.8.5'
+
+
+
 
 }

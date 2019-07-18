@@ -23,7 +23,56 @@ class MainActivity : BaseActivity() {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.activity_main)
 
+        initWidget()
 
+    }
+
+
+    private fun initBottomNavigation() {
+        main_bottom_nav_view.disableShiftMode()
+        main_bottom_nav_view.setOnNavigationItemSelectedListener {
+
+            when (it.itemId) {
+                R.id.nav1 -> {
+                    main_view_pager.currentItem = 0
+                    mainViewModel.categoryTitle.value = "친구"
+                    mainViewModel.topIconState.value = 0
+                    return@setOnNavigationItemSelectedListener true;
+                }
+                R.id.nav2 -> {
+                    main_view_pager.currentItem = 1
+                    mainViewModel.categoryTitle.value = "채팅"
+                    mainViewModel.topIconState.value = 1
+                    return@setOnNavigationItemSelectedListener true;
+
+                }
+                R.id.nav3 -> {
+                    main_view_pager.currentItem = 0
+                    mainViewModel.categoryTitle.value = "정보"
+                    mainViewModel.topIconState.value = 2
+                    return@setOnNavigationItemSelectedListener true;
+
+                }
+                R.id.nav4 -> {
+                    main_view_pager.currentItem = 0
+                    mainViewModel.categoryTitle.value = "설정"
+                    mainViewModel.topIconState.value = 3
+                    return@setOnNavigationItemSelectedListener true;
+
+                }
+                else ->
+                    return@setOnNavigationItemSelectedListener false
+
+
+            }
+
+
+        }
+
+
+    }
+
+     fun initWidget() {
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
         mainViewModel.categoryTitle.value = "친구"
         mainViewModel.topIconState.value = 0
@@ -61,53 +110,6 @@ class MainActivity : BaseActivity() {
         initFragmentPager()
         initBottomNavigation()
         main_view_pager.setCurrentItem(0, true)
-
-
-    }
-
-
-    private fun initBottomNavigation() {
-        main_bottom_nav_view.disableShiftMode()
-        main_bottom_nav_view.setOnNavigationItemSelectedListener {
-
-            when (it.itemId) {
-                R.id.nav1 -> {
-                    main_view_pager.currentItem = 0
-                    mainViewModel.categoryTitle.value = "친구"
-                    mainViewModel.topIconState.value = 0
-                    return@setOnNavigationItemSelectedListener true;
-                }
-                R.id.nav2 -> {
-                    main_view_pager.currentItem = 0
-                    mainViewModel.categoryTitle.value = "채팅"
-                    mainViewModel.topIconState.value = 1
-                    return@setOnNavigationItemSelectedListener true;
-
-                }
-                R.id.nav3 -> {
-                    main_view_pager.currentItem = 0
-                    mainViewModel.categoryTitle.value = "정보"
-                    mainViewModel.topIconState.value = 2
-                    return@setOnNavigationItemSelectedListener true;
-
-                }
-                R.id.nav4 -> {
-                    main_view_pager.currentItem = 0
-                    mainViewModel.categoryTitle.value = "설정"
-                    mainViewModel.topIconState.value = 3
-                    return@setOnNavigationItemSelectedListener true;
-
-                }
-                else ->
-                    return@setOnNavigationItemSelectedListener false
-
-
-            }
-
-
-        }
-
-
     }
 
     private fun initFragmentPager() {

@@ -1,11 +1,19 @@
 package com.example.secretpairproject.base
 
+
+import android.content.res.Configuration
 import android.graphics.Color
+import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 
-open class BaseActivity : AppCompatActivity() {
+abstract class BaseActivity : AppCompatActivity() {
 
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     fun setBarTransparency() {
 
@@ -24,6 +32,10 @@ open class BaseActivity : AppCompatActivity() {
         window.statusBarColor = Color.WHITE
     }
 
+    fun log(message: String) {
+        Log.e(this.javaClass.name, message)
+    }
+
 //    private fun setWindowFlag(bits: Int, on: Boolean) {
 //        val win = window
 //        val winParams = win.attributes
@@ -34,6 +46,25 @@ open class BaseActivity : AppCompatActivity() {
 //        }
 //        win.attributes = winParams
 //    }
+
+
+    fun getStatusBarHeight(): Int {
+
+        var statusHeight = 0
+        val screenSizeType =
+            (applicationContext.resources.configuration.screenLayout) or Configuration.SCREENLAYOUT_SIZE_MASK
+
+
+        if (screenSizeType != Configuration.SCREENLAYOUT_SIZE_XLARGE) {
+            val resourceId = applicationContext.getResources().getIdentifier("status_bar_height", "dimen", "android");
+
+            if (resourceId > 0) {
+                statusHeight = applicationContext.getResources().getDimensionPixelSize(resourceId);
+            }
+        }
+
+        return statusHeight;
+    }
 
 
 }
